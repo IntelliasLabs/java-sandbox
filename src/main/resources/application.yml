@@ -1,0 +1,19 @@
+initializr:
+  javaVersions:
+    - id: 17
+      default: true
+    - id: 11
+      default: false
+    - id: 1.8
+      default: false
+  languages:
+    - name: Java
+      id: java
+      default: true
+  packagings:
+    - name: Jar
+      id: jar
+      default: true
+    - name: War
+      id: war
+      default: false
