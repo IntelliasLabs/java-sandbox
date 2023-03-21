@@ -23,18 +23,18 @@ public class CreateDirsTreeService {
         Map<String, ArrayList<Object>> data = new Yaml().load(inputStream);
         log.info("Yaml folders structure: " + data);
 
-        createDirsforNode(data, pathToSaveStructure);
+        createDirsForNode(data, pathToSaveStructure);
     }
 
-    private void createDirsforNode(Map<String, ArrayList<Object>> data, String mainPath) {
+    private void createDirsForNode(Map<String, ArrayList<Object>> data, String mainPath) {
         data.forEach((key, value) -> {
             makeDir(mainPath + "/" + key);
-            value.forEach(obj -> {
-                if (obj instanceof String) {
-                    makeDir(mainPath + "/" + key + "/" + obj);
-                } else if (obj instanceof Map<?, ?>) {
-                    Map<String, ArrayList<Object>> map = (Map<String, ArrayList<Object>>) obj;
-                    createDirsforNode(map, mainPath + "/" + key);
+            value.forEach(node -> {
+                if (node instanceof String) {
+                    makeDir(mainPath + "/" + key + "/" + node);
+                } else if (node instanceof Map<?, ?>) {
+                    Map<String, ArrayList<Object>> map = (Map<String, ArrayList<Object>>) node;
+                    createDirsForNode(map, mainPath + "/" + key);
                 }
             });
         });
