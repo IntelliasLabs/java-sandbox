@@ -1,6 +1,9 @@
 # java-sandbox
 Java Sandbox for R&amp;D
 
+# Requirements:
+- Java 8 or up to and including Java 19
+
 
 # Notes for further development
 As described in https://docs.spring.io/initializr/docs/current-SNAPSHOT/reference/html/#create-instance-advanced-config-custom-project-request there is a possibility to customize spring initializr.
