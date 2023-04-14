@@ -1,8 +1,8 @@
 package com.intellias.devsandbox.playground;
 
-import io.spring.initializr.web.project.ProjectRequest;
+import io.spring.initializr.web.project.WebProjectRequest;
 
-public class CustomProjectRequest extends ProjectRequest {
+public class CustomProjectRequest extends WebProjectRequest {
 
     private String testAttribute;
 
