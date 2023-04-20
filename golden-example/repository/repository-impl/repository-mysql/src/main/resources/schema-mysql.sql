@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS books (
+   id       BIGINT AUTO_INCREMENT NOT NULL,
+   title    VARCHAR(255) NULL,
+   author   VARCHAR(100) NULL,
+   isbn     VARCHAR(20) NULL,
+   CONSTRAINT pk_books PRIMARY KEY (id)
+);

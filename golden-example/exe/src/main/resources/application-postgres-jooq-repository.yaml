@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/db?currentSchema=golden_example
+    username: root
+    password: secret-pw-postgres
+
+repository:
+  mysql:
+    enabled: false
+  postgres:
+    enabled: true
