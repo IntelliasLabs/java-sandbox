@@ -26,6 +26,7 @@ public class CustomProjectRequestToDescriptionConverter implements ProjectReques
         validateDependencyRange(platformVersion, resolvedDependencies);
 
         description.setApplicationName(request.getApplicationName());
+        description.setApplicationName(request.getName());
         description.setArtifactId(request.getArtifactId());
         description.setBaseDirectory(request.getBaseDir());
         description.setBuildSystem(getBuildSystem(request, metadata));

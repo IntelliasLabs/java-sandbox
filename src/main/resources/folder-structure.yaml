@@ -1,0 +1,16 @@
+root:
+  - core:
+      - system
+      - integration
+  - lambda:
+      - login
+      - sign up
+      - refresh
+  - exception
+  - module4:
+      - bank1:
+          - m1
+          - m2
+          - m3
+      - bank2
+      - bank3

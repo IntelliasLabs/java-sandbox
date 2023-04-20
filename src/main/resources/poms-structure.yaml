@@ -1,0 +1,54 @@
+root:
+  specification:
+    type: maven-project
+    language: java
+    bootVersion: 3.0.5
+    baseDir: core
+    groupId: com.example
+    artifactId: core
+    name: core
+    description: "Core"
+    packageName: com.core
+    packaging: jar
+    javaVersion: 17
+    dependencies: [ web ]
+  modules:
+    - core:
+        type: maven-project
+        language: java
+        bootVersion: 3.0.5
+        baseDir: core
+        groupId: com.example
+        artifactId: core
+        name: core
+        description: "Core"
+        packageName: com.core
+        packaging: jar
+        javaVersion: 17
+        dependencies: [ web ]
+    - lambda:
+        type: maven-project
+        language: java
+        bootVersion: 3.0.5
+        baseDir: lambda
+        groupId: com.lambda
+        artifactId: lambda
+        name: lambda
+        description: "Lambda"
+        packageName: com.lambda
+        packaging: jar
+        javaVersion: 17
+        dependencies: [ web, lombok ]
+    - exception:
+        type: maven-project
+        language: java
+        bootVersion: 3.0.5
+        baseDir: exception
+        groupId: com.exception
+        artifactId: exception
+        name: exception
+        description: "Exception"
+        packageName: com.exception
+        packaging: jar
+        javaVersion: 17
+        dependencies: [ web, kafka, hateoas, data-jpa, cache, azure-storage, cloud-function]
