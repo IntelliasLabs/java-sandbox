@@ -1,0 +1,28 @@
+version: "3.3"
+
+services:
+
+  mysql-db:
+    image: mysql/mysql-server:5.7
+    environment:
+      MYSQL_DATABASE: 'db'
+      MYSQL_ROOT_PASSWORD: 'secret-pw'
+      MYSQL_ROOT_HOST: '%'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - './.mysql-data/db:/var/lib/mysql'
+
+  postgres-db:
+    image: postgres:15.2
+    environment:
+      POSTGRES_USER: "root"
+      POSTGRES_PASSWORD: "secret-pw-postgres"
+      POSTGRES_DB: "db"
+      PGDATA: /var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+    volumes:
+      - './.postgres-data:/var/lib/postgresql/data'
