@@ -4,7 +4,6 @@ import com.intellias.basicsandbox.persistence.ItemRepository;
 import com.intellias.basicsandbox.persistence.entity.ItemEntity;
 import com.intellias.basicsandbox.service.ItemService;
 import com.intellias.basicsandbox.service.dto.ItemDTO;
-//import jakarta.persistence.EntityNotFoundException;
 import com.intellias.basicsandbox.service.mapper.ItemMapper;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.stream.Collectors;
@@ -42,7 +41,7 @@ public class ItemServiceImpl implements ItemService {
     @Transactional(readOnly = true)
     public ItemDTO getById(UUID id) {
         final ItemEntity entity = itemRepository.findById(id)
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Item with id %s not found", id)));
         return itemMapper.toDTO(entity);
     }
 
