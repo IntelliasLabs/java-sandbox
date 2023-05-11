@@ -8,7 +8,6 @@ import com.intellias.basicsandbox.service.dto.ItemDTO;
 import com.intellias.basicsandbox.service.mapper.ItemMapper;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
@@ -36,7 +35,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public void update(ItemDTO item) {
-        itemRepository.updatePost(item.getName(), item.getId());
+        itemRepository.updateItem(item.getName(), item.getId());
     }
 
     @Override
