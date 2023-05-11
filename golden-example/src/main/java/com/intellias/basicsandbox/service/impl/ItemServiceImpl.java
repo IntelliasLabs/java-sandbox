@@ -1,13 +1,16 @@
 package com.intellias.basicsandbox.service.impl;
 
+import com.intellias.basicsandbox.service.exception.ItemAlreadyExistsException;
+import com.intellias.basicsandbox.service.exception.ItemNotFoundException;
 import com.intellias.basicsandbox.persistence.ItemRepository;
 import com.intellias.basicsandbox.persistence.entity.ItemEntity;
 import com.intellias.basicsandbox.service.ItemService;
 import com.intellias.basicsandbox.service.dto.ItemDTO;
 import com.intellias.basicsandbox.service.mapper.ItemMapper;
-import jakarta.persistence.EntityNotFoundException;
+
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -27,22 +31,27 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDTO save(ItemDTO item) {
-       ItemEntity itemEntity = itemMapper.toEntity(item);
-       final ItemEntity savedEntity = itemRepository.save(itemEntity);
-       return itemMapper.toDTO(savedEntity);
+        if (itemRepository.existsById(item.getId())){
+            throw new ItemAlreadyExistsException(item.getId());
+        }
+
+        ItemEntity itemEntity = itemMapper.toEntity(item);
+        final ItemEntity savedEntity = itemRepository.save(itemEntity);
+        return itemMapper.toDTO(savedEntity);
     }
 
     @Override
-    public void update(ItemDTO item) {
-        itemRepository.updateItem(item.getName(), item.getId());
+    public ItemDTO update(ItemDTO item) {
+        final ItemEntity updatedItemEntity = itemRepository.updateItem(item.getName(), item.getId());
+        return itemMapper.toDTO(updatedItemEntity);
     }
 
     @Override
     @Transactional(readOnly = true)
     public ItemDTO getById(UUID id) {
-        final ItemEntity entity = itemRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("Item with id %s not found", id)));
-        return itemMapper.toDTO(entity);
+        return itemRepository.findById(id)
+                .map(itemMapper::toDTO)
+                .orElseThrow(() -> new ItemNotFoundException(id));
     }
 
     @Override
