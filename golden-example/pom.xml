@@ -17,6 +17,7 @@
         <java.version>17</java.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
         <lombok.version>1.18.26</lombok.version>
+        <testcontainers.postgres.version>1.18.26</testcontainers.postgres.version>
     </properties>
     <dependencies>
 
@@ -63,6 +64,13 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>1.18.1</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>

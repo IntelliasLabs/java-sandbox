@@ -1,0 +1,8 @@
+#  New application-integration.yml file created under src/test/resources.
+#  Any property defined in this file will take precedence over the main one when the integration profile is enabled.
+#  In this case, we’ll overwrite the value for spring.datasource.url following a format defined by Testcontainers.
+spring:
+  datasource:
+    url: jdbc:tc:postgresql:14.4:///
+  flyway:
+    baselineOnMigrate: true
