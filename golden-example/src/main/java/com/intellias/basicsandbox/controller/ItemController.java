@@ -25,9 +25,8 @@ public class ItemController {
     }
 
     @PutMapping
-    public ResponseEntity<Void> update(@Valid @RequestBody final ItemDTO item) {
-        itemService.update(item);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<ItemDTO> update(@Valid @RequestBody final ItemDTO item) {
+        return new ResponseEntity<>(itemService.update(item), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

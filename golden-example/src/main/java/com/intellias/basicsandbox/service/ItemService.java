@@ -8,7 +8,7 @@ import java.util.UUID;
 public interface ItemService {
     ItemDTO save(ItemDTO item);
 
-    void update(ItemDTO item);
+    ItemDTO update(ItemDTO item);
 
     ItemDTO getById(UUID id);
 
