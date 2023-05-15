@@ -16,7 +16,7 @@ import java.util.UUID;
 @RequestMapping(ItemController.PATH)
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class ItemController {
-    final static String PATH = "items";
+    public final static String PATH = "items";
     private final ItemService itemService;
 
     @PostMapping
@@ -24,9 +24,9 @@ public class ItemController {
         return new ResponseEntity<>(itemService.save(item), HttpStatus.CREATED);
     }
 
-    @PutMapping
-    public ResponseEntity<ItemDTO> update(@Valid @RequestBody final ItemDTO item) {
-        return new ResponseEntity<>(itemService.update(item), HttpStatus.OK);
+    @PutMapping("/{id}")
+    public ResponseEntity<ItemDTO> update(@PathVariable("id") final UUID id, @Valid @RequestBody final ItemDTO item) {
+        return new ResponseEntity<>(itemService.update(id, item), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -42,6 +42,6 @@ public class ItemController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") final UUID id) {
         itemService.delete(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

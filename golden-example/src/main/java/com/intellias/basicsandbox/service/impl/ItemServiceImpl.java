@@ -31,19 +31,22 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDTO save(ItemDTO item) {
-        if (itemRepository.existsById(item.getId())){
-            throw new ItemAlreadyExistsException(item.getId());
-        }
-
         ItemEntity itemEntity = itemMapper.toEntity(item);
         final ItemEntity savedEntity = itemRepository.save(itemEntity);
         return itemMapper.toDTO(savedEntity);
     }
 
     @Override
-    public ItemDTO update(ItemDTO item) {
-        final ItemEntity updatedItemEntity = itemRepository.updateItem(item.getName(), item.getId());
-        return itemMapper.toDTO(updatedItemEntity);
+    public ItemDTO update(UUID id, ItemDTO item) {
+        if (!itemRepository.existsById(id)){
+            throw new ItemNotFoundException(id);
+        }
+
+        itemRepository.updateItem(item.getName(), id);
+
+        return itemRepository.findById(id)
+                .map(itemMapper::toDTO)
+                .orElseThrow(() -> new ItemNotFoundException(id));
     }
 
     @Override
@@ -57,10 +60,10 @@ public class ItemServiceImpl implements ItemService {
     @Override
     @Transactional(readOnly = true)
     public List<ItemDTO> findAll() {
-      return StreamSupport.stream(itemRepository.findAll().spliterator(), false) // Note: if you use more advanced repository
-              // interface like JpaRepository it usually has better type [List, Stream] for method findAll()
-              .map(itemMapper::toDTO)
-              .collect(Collectors.toList());
+        return StreamSupport.stream(itemRepository.findAll().spliterator(), false) // Note: if you use more advanced repository
+                // interface like JpaRepository it usually has better type [List, Stream] for method findAll()
+                .map(itemMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
