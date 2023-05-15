@@ -16,6 +16,6 @@ public interface ItemRepository extends CrudRepository<ItemEntity, UUID> {
     // TODO tests
     @Modifying
     @Query("update ItemEntity i set i.name = :name where i.id = :itemId")
-    ItemEntity updateItem(@Param("name") final String name, @Param("itemId") final UUID itemId);
+    void updateItem(@Param("name") final String name, @Param("itemId") final UUID itemId);
 
 }

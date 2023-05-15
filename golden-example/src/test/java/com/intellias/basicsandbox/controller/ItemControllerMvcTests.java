@@ -77,9 +77,9 @@ class ItemControllerMvcTests {
     void whenUpdateItemThenReturn200() throws Exception {
         var itemId = UUID.fromString("55fd4dd7-3da4-40c8-a940-10c9c3c75e04");
         var itemDTO = new ItemDTO(itemId, "Item updated name");
-        given(itemService.update(itemDTO)).willReturn(itemDTO);
+        given(itemService.update(itemId, itemDTO)).willReturn(itemDTO);
 
-        mockMvc.perform(put("/" + ItemController.PATH)
+        mockMvc.perform(put("/" + ItemController.PATH + "/" + itemId)
                         .content(asJsonString(itemDTO))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -88,10 +88,10 @@ class ItemControllerMvcTests {
     }
 
     @Test
-    void whenDeleteItemThenReturn200() throws Exception {
+    void whenDeleteItemThenReturn204() throws Exception {
         var itemId = UUID.fromString("55fd4dd7-3da4-40c8-a940-10c9c3c75e04");
 
         mockMvc.perform(delete("/" + ItemController.PATH + "/" + itemId))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
 }

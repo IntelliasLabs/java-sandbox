@@ -1,6 +1,5 @@
 package com.intellias.basicsandbox.domain;
 
-import com.intellias.basicsandbox.service.exception.ItemAlreadyExistsException;
 import com.intellias.basicsandbox.persistence.ItemRepository;
 import com.intellias.basicsandbox.persistence.entity.ItemEntity;
 import com.intellias.basicsandbox.service.dto.ItemDTO;
@@ -11,10 +10,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
 import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -27,30 +27,30 @@ class ItemServiceTest {
     private ItemServiceImpl itemService;
 
     @Test
-    void whenItemToCreateAlreadyExistsThenThrows() {
+    void whenItemExistsThenGetById() {
         var itemId = UUID.fromString("55fd4dd7-3da4-40c8-a940-10c9c3c75e04");
-        var itemToCreate = new ItemDTO(itemId, "Item name");
+        var itemEntity = new ItemEntity(itemId, "Item name");
+        when(itemRepository.findById(itemId)).thenReturn(Optional.of(itemEntity));
 
-        when(itemRepository.existsById(itemId)).thenReturn(true);
-        assertThatThrownBy(() -> itemService.save(itemToCreate))
-                .isInstanceOf(ItemAlreadyExistsException.class)
-                .hasMessage("An item with ID " + itemId + " already exists.");
+        ItemDTO existItem = itemService.getById(itemId);
+
+        assertEquals(existItem.getId(), itemId);
+        assertEquals(existItem.getName(), itemEntity.getName());
     }
 
     @Test
-    void whenItemToReadDoesNotExistThenSave() {
+    void whenItemDoesNotExistThenSave() {
         var itemId = UUID.fromString("55fd4dd7-3da4-40c8-a940-10c9c3c75e04");
         var itemName = "Item name";
 
-        var itemToCreate = new ItemDTO(itemId, itemName);
+        var itemToCreate = new ItemDTO(null, itemName);
         var itemEntity = new ItemEntity(itemId, itemName);
 
-        when(itemRepository.existsById(itemId)).thenReturn(false);
-        when(itemRepository.save(itemEntity)).thenReturn(itemEntity);
+        when(itemRepository.save(any())).thenReturn(itemEntity);
 
         ItemDTO savedItem = itemService.save(itemToCreate);
 
-        assertEquals(savedItem.getId(), itemToCreate.getId());
+        assertEquals(savedItem.getId(), itemId);
         assertEquals(savedItem.getName(), itemToCreate.getName());
     }
 
