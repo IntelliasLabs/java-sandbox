@@ -1,9 +1,10 @@
 package com.intellias.basicsandbox.controller;
 
-import com.intellias.basicsandbox.service.exception.ItemAlreadyExistsException;
-import com.intellias.basicsandbox.service.exception.ItemNotFoundException;
+import com.intellias.basicsandbox.persistence.entity.ItemEntity;
 import com.intellias.basicsandbox.service.ItemService;
 import com.intellias.basicsandbox.service.dto.ItemDTO;
+import com.intellias.basicsandbox.service.exception.ItemAlreadyExistsException;
+import com.intellias.basicsandbox.service.exception.ItemNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -40,8 +41,8 @@ class ItemControllerMvcTests {
     @Test
     void whenGetItemByIdFoundThenReturn200() throws Exception {
         var itemId = UUID.fromString("55fd4dd7-3da4-40c8-a940-10c9c3c75e04");
-        var itemDTO = new ItemDTO(itemId, "Item name");
-        given(itemService.getById(itemId)).willReturn(itemDTO);
+        var item = new ItemEntity(itemId, "Item name");
+        given(itemService.getById(itemId)).willReturn(item);
 
         mockMvc.perform(get("/" + ItemController.PATH + "/" + itemId))
                 .andExpect(status().isOk());
@@ -51,7 +52,8 @@ class ItemControllerMvcTests {
     void whenSaveItemThenReturn201() throws Exception {
         var itemId = UUID.fromString("55fd4dd7-3da4-40c8-a940-10c9c3c75e04");
         var itemDTO = new ItemDTO(itemId, "Item name");
-        given(itemService.save(itemDTO)).willReturn(itemDTO);
+        var item = new ItemEntity(itemId, "Item name");
+        given(itemService.save(item)).willReturn(item);
 
         mockMvc.perform(post("/" + ItemController.PATH)
                         .content(asJsonString(itemDTO))
@@ -65,7 +67,8 @@ class ItemControllerMvcTests {
     void whenSaveAlreadyExistsItemThenReturn422() throws Exception {
         var itemId = UUID.fromString("55fd4dd7-3da4-40c8-a940-10c9c3c75e04");
         var itemDTO = new ItemDTO(itemId, "Item name");
-        given(itemService.save(itemDTO)).willThrow(ItemAlreadyExistsException.class);
+        var item = new ItemEntity(itemId, "Item name");
+        given(itemService.save(item)).willThrow(ItemAlreadyExistsException.class);
 
         mockMvc.perform(post("/" + ItemController.PATH)
                         .content(asJsonString(itemDTO))
@@ -77,7 +80,8 @@ class ItemControllerMvcTests {
     void whenUpdateItemThenReturn200() throws Exception {
         var itemId = UUID.fromString("55fd4dd7-3da4-40c8-a940-10c9c3c75e04");
         var itemDTO = new ItemDTO(itemId, "Item updated name");
-        given(itemService.update(itemId, itemDTO)).willReturn(itemDTO);
+        var item = new ItemEntity(itemId, "Item updated name");
+        given(itemService.update(itemId, item)).willReturn(item);
 
         mockMvc.perform(put("/" + ItemController.PATH + "/" + itemId)
                         .content(asJsonString(itemDTO))

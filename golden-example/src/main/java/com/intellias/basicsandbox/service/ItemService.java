@@ -1,18 +1,18 @@
 package com.intellias.basicsandbox.service;
 
-import com.intellias.basicsandbox.service.dto.ItemDTO;
+import com.intellias.basicsandbox.persistence.entity.ItemEntity;
 
 import java.util.List;
 import java.util.UUID;
 
 public interface ItemService {
-    ItemDTO save(ItemDTO item);
+    ItemEntity save(ItemEntity item);
 
-    ItemDTO update(UUID id, ItemDTO item);
+    ItemEntity update(UUID id, ItemEntity item);
 
-    ItemDTO getById(UUID id);
+    ItemEntity getById(UUID id);
 
-    List<ItemDTO> findAll();
+    List<ItemEntity> findAll();
 
     void delete(UUID id);
 }
