@@ -2,7 +2,7 @@ package com.intellias.basicsandbox;
 
 import com.intellias.basicsandbox.controller.ItemController;
 import com.intellias.basicsandbox.controller.exception.dto.ErrorDTO;
-import com.intellias.basicsandbox.service.dto.ItemDTO;
+import com.intellias.basicsandbox.controller.dto.ItemDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

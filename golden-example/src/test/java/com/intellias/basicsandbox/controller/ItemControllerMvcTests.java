@@ -2,7 +2,7 @@ package com.intellias.basicsandbox.controller;
 
 import com.intellias.basicsandbox.persistence.entity.ItemEntity;
 import com.intellias.basicsandbox.service.ItemService;
-import com.intellias.basicsandbox.service.dto.ItemDTO;
+import com.intellias.basicsandbox.controller.dto.ItemDTO;
 import com.intellias.basicsandbox.service.exception.ItemAlreadyExistsException;
 import com.intellias.basicsandbox.service.exception.ItemNotFoundException;
 import org.junit.jupiter.api.Test;

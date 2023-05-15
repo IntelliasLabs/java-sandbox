@@ -2,8 +2,8 @@ package com.intellias.basicsandbox.controller;
 
 import com.intellias.basicsandbox.persistence.entity.ItemEntity;
 import com.intellias.basicsandbox.service.ItemService;
-import com.intellias.basicsandbox.service.dto.ItemDTO;
-import com.intellias.basicsandbox.service.mapper.ItemMapper;
+import com.intellias.basicsandbox.controller.dto.ItemDTO;
+import com.intellias.basicsandbox.controller.mapper.ItemMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
