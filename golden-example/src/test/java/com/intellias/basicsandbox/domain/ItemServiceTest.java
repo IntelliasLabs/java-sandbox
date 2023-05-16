@@ -2,10 +2,11 @@ package com.intellias.basicsandbox.domain;
 
 import com.intellias.basicsandbox.persistence.ItemRepository;
 import com.intellias.basicsandbox.persistence.entity.ItemEntity;
+import com.intellias.basicsandbox.service.ItemService;
 import com.intellias.basicsandbox.service.impl.ItemServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -22,8 +23,12 @@ class ItemServiceTest {
     @Mock
     private ItemRepository itemRepository;
 
-    @InjectMocks
-    private ItemServiceImpl itemService;
+    private ItemService itemService;
+
+    @BeforeEach
+    void setUp() {
+        itemService = new ItemServiceImpl(itemRepository);
+    }
 
     @Test
     void whenItemExistsThenGetById() {
