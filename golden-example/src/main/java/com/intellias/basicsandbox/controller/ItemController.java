@@ -16,10 +16,11 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(ItemController.PATH)
+@RequestMapping(ItemController.API_VERSION + ItemController.PATH)
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class ItemController {
     public final static String PATH = "items";
+    public final static String API_VERSION = "/api/v1/";
     private final ItemMapper itemMapper = Mappers.getMapper(ItemMapper.class);
 
     private final ItemService itemService;
@@ -33,7 +34,7 @@ public class ItemController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ItemDTO> update(@PathVariable("id") final UUID id, @Valid @RequestBody final ItemDTO item) {
-        ItemEntity updatedItem =  itemService.update(id, itemMapper.toEntity(item));
+        ItemEntity updatedItem = itemService.update(id, itemMapper.toEntity(item));
         return new ResponseEntity<>(itemMapper.toDTO(updatedItem), HttpStatus.OK);
     }
 

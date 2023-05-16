@@ -24,7 +24,7 @@ class SandboxApplicationTests {
 
         ItemDTO expectedItem = webTestClient
                 .post()
-                .uri("/" + ItemController.PATH)
+                .uri(ItemController.API_VERSION + ItemController.PATH)
                 .bodyValue(itemToCreate)
                 .exchange()
                 .expectStatus().isCreated()
@@ -33,7 +33,7 @@ class SandboxApplicationTests {
 
         webTestClient
                 .get()
-                .uri("/" + ItemController.PATH + "/" + expectedItem.getId())
+                .uri(ItemController.API_VERSION + ItemController.PATH + "/" + expectedItem.getId())
                 .exchange()
                 .expectStatus().is2xxSuccessful()
                 .expectBody(ItemDTO.class).value(actualItem -> {
@@ -48,7 +48,7 @@ class SandboxApplicationTests {
 
         webTestClient
                 .post()
-                .uri("/" + ItemController.PATH)
+                .uri(ItemController.API_VERSION + ItemController.PATH)
                 .bodyValue(expectedItem)
                 .exchange()
                 .expectStatus().isCreated()
@@ -65,7 +65,7 @@ class SandboxApplicationTests {
 
         ItemDTO createdItem = webTestClient
                 .post()
-                .uri("/" + ItemController.PATH)
+                .uri(ItemController.API_VERSION + ItemController.PATH)
                 .bodyValue(itemToCreate)
                 .exchange()
                 .expectStatus().isCreated()
@@ -76,7 +76,7 @@ class SandboxApplicationTests {
 
         webTestClient
                 .put()
-                .uri("/" + ItemController.PATH + "/" + createdItem.getId())
+                .uri(ItemController.API_VERSION + ItemController.PATH + "/" + createdItem.getId())
                 .bodyValue(createdItem)
                 .exchange()
                 .expectStatus().isOk()
@@ -92,7 +92,7 @@ class SandboxApplicationTests {
 
         ItemDTO createdItem = webTestClient
                 .post()
-                .uri("/" + ItemController.PATH)
+                .uri(ItemController.API_VERSION + ItemController.PATH)
                 .bodyValue(itemToCreate)
                 .exchange()
                 .expectStatus().isCreated()
@@ -101,13 +101,13 @@ class SandboxApplicationTests {
 
         webTestClient
                 .delete()
-                .uri("/" + ItemController.PATH + "/" + createdItem.getId())
+                .uri(ItemController.API_VERSION + ItemController.PATH + "/" + createdItem.getId())
                 .exchange()
                 .expectStatus().isNoContent();
 
         webTestClient
                 .get()
-                .uri("/" + ItemController.PATH + "/" + createdItem.getId())
+                .uri(ItemController.API_VERSION + ItemController.PATH + "/" + createdItem.getId())
                 .exchange()
                 .expectStatus().isNotFound()
                 .expectBody(ErrorDTO.class).value(errorMessage ->

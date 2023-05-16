@@ -34,7 +34,7 @@ class ItemControllerMvcTests {
         var itemId = UUID.randomUUID();
         given(itemService.getById(itemId)).willThrow(ItemNotFoundException.class);
 
-        mockMvc.perform(get("/" + ItemController.PATH + "/" + itemId))
+        mockMvc.perform(get(ItemController.API_VERSION + ItemController.PATH + "/" + itemId))
                 .andExpect(status().isNotFound());
     }
 
@@ -44,7 +44,7 @@ class ItemControllerMvcTests {
         var item = new ItemEntity(itemId, "Item name");
         given(itemService.getById(itemId)).willReturn(item);
 
-        mockMvc.perform(get("/" + ItemController.PATH + "/" + itemId))
+        mockMvc.perform(get(ItemController.API_VERSION + ItemController.PATH + "/" + itemId))
                 .andExpect(status().isOk());
     }
 
@@ -55,7 +55,7 @@ class ItemControllerMvcTests {
         var item = new ItemEntity(itemId, "Item name");
         given(itemService.save(item)).willReturn(item);
 
-        mockMvc.perform(post("/" + ItemController.PATH)
+        mockMvc.perform(post(ItemController.API_VERSION + ItemController.PATH)
                         .content(asJsonString(itemDTO))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
@@ -70,7 +70,7 @@ class ItemControllerMvcTests {
         var item = new ItemEntity(itemId, "Item name");
         given(itemService.save(item)).willThrow(ItemAlreadyExistsException.class);
 
-        mockMvc.perform(post("/" + ItemController.PATH)
+        mockMvc.perform(post(ItemController.API_VERSION + ItemController.PATH)
                         .content(asJsonString(itemDTO))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnprocessableEntity());
@@ -83,7 +83,7 @@ class ItemControllerMvcTests {
         var item = new ItemEntity(itemId, "Item updated name");
         given(itemService.update(itemId, item)).willReturn(item);
 
-        mockMvc.perform(put("/" + ItemController.PATH + "/" + itemId)
+        mockMvc.perform(put(ItemController.API_VERSION + ItemController.PATH + "/" + itemId)
                         .content(asJsonString(itemDTO))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -95,7 +95,7 @@ class ItemControllerMvcTests {
     void whenDeleteItemThenReturn204() throws Exception {
         var itemId = UUID.fromString("55fd4dd7-3da4-40c8-a940-10c9c3c75e04");
 
-        mockMvc.perform(delete("/" + ItemController.PATH + "/" + itemId))
+        mockMvc.perform(delete(ItemController.API_VERSION + ItemController.PATH + "/" + itemId))
                 .andExpect(status().isNoContent());
     }
 }
