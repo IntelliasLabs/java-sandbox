@@ -1,4 +1,4 @@
-package com.intellias.basicsandbox.controller.exception.dto;
+package com.intellias.basicsandbox.controller.dto;
 
 import lombok.Data;
 import org.springframework.http.HttpStatus;

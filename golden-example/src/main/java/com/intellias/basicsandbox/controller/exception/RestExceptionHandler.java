@@ -1,6 +1,6 @@
 package com.intellias.basicsandbox.controller.exception;
 
-import com.intellias.basicsandbox.controller.exception.dto.ErrorDTO;
+import com.intellias.basicsandbox.controller.dto.ErrorDTO;
 import com.intellias.basicsandbox.service.exception.ItemAlreadyExistsException;
 import com.intellias.basicsandbox.service.exception.ItemNotFoundException;
 import org.springframework.http.HttpStatus;
