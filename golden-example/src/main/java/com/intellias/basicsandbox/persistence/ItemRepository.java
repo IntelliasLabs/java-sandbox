@@ -13,7 +13,6 @@ import org.springframework.data.repository.query.Param;
 // the rather generic persistence technology-agnostic interfaces such as CrudRepository.
 public interface ItemRepository extends CrudRepository<ItemEntity, UUID> {
 
-    // TODO tests
     @Modifying
     @Query("update ItemEntity i set i.name = :name where i.id = :itemId")
     void updateItem(@Param("name") final String name, @Param("itemId") final UUID itemId);
