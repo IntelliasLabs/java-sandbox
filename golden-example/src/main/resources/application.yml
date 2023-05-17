@@ -1,0 +1,38 @@
+server:
+  port: '8080'
+
+# Logging
+logging:
+  level:
+    org: info
+    com:
+      intellias:
+        basicsandbox: # You can change desired logging level for specific package.
+          controller: INFO # For example for all classes inside controller packages to use DEBUG level: logging.level.com.intellias.basicsandbox.controller=DEBUG
+spring:
+
+  # Datasource
+  datasource:
+    url: 'jdbc:postgresql://localhost:5432/sandbox_db'
+    username: user
+    password: password
+
+  # Hibernate
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        show_sql: false
+        format_sql: false
+        dialect: org.hibernate.dialect.PostgreSQL94Dialect
+
+  # Flyway
+  flyway:
+    enabled: true
+    locations: 'classpath:/db/migration/'
+
+# App specific
+app:
+  dev:
+    service-logging-enable: true # Aspect driven logging of all @Service annotated classes
