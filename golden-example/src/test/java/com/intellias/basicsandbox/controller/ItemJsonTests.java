@@ -18,7 +18,7 @@ class ItemJsonTests {
 
     @Test
     void testSerialize() throws Exception {
-        var itemDTO = new ItemDTO(UUID.fromString("55fd4dd7-3da4-40c8-a940-10c9c3c75e04"), "Item name");
+        var itemDTO = new ItemDTO(UUID.fromString("55fd4dd7-3da4-40c8-a940-10c9c3c75e04"), "Item name", null);
         var jsonContent = json.write(itemDTO);
 
         assertThat(jsonContent).extractingJsonPathStringValue("@.id")
@@ -38,7 +38,7 @@ class ItemJsonTests {
 
         assertThat(json.parse(content))
                 .usingRecursiveComparison()
-                .isEqualTo(new ItemDTO(UUID.fromString("55fd4dd7-3da4-40c8-a940-10c9c3c75e04"), "Item name"));
+                .isEqualTo(new ItemDTO(UUID.fromString("55fd4dd7-3da4-40c8-a940-10c9c3c75e04"), "Item name", null));
     }
 
 }

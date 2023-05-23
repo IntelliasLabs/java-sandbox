@@ -33,7 +33,7 @@ class ItemServiceTest {
     @Test
     void whenItemExistsThenGetById() {
         var itemId = UUID.fromString("55fd4dd7-3da4-40c8-a940-10c9c3c75e04");
-        var itemEntity = new ItemEntity(itemId, "Item name");
+        var itemEntity = new ItemEntity(itemId, "Item name", null);
         when(itemRepository.findById(itemId)).thenReturn(Optional.of(itemEntity));
 
         ItemEntity existItem = itemService.getById(itemId);
@@ -47,8 +47,8 @@ class ItemServiceTest {
         var itemId = UUID.fromString("55fd4dd7-3da4-40c8-a940-10c9c3c75e04");
         var itemName = "Item name";
 
-        var itemToCreate = new ItemEntity(null, itemName);
-        var itemEntity = new ItemEntity(itemId, itemName);
+        var itemToCreate = new ItemEntity(null, itemName, null);
+        var itemEntity = new ItemEntity(itemId, itemName, null);
 
         when(itemRepository.save(any())).thenReturn(itemEntity);
 

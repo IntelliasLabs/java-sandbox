@@ -1,12 +1,11 @@
 package com.intellias.basicsandbox.persistence.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.intellias.basicsandbox.persistence.converter.EncryptedStringConverter;
+import jakarta.persistence.*;
+
 
 import java.util.UUID;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,5 +21,10 @@ public class ItemEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "credit_card")
+    @Convert(converter = EncryptedStringConverter.class)
+    private String creditCard;
 }

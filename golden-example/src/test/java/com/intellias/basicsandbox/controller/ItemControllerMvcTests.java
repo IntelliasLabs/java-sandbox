@@ -41,7 +41,7 @@ class ItemControllerMvcTests {
     @Test
     void whenGetItemByIdFoundThenReturn200() throws Exception {
         var itemId = UUID.fromString("55fd4dd7-3da4-40c8-a940-10c9c3c75e04");
-        var item = new ItemEntity(itemId, "Item name");
+        var item = new ItemEntity(itemId, "Item name", null);
         given(itemService.getById(itemId)).willReturn(item);
 
         mockMvc.perform(get(ItemController.API_VERSION + ItemController.PATH + "/" + itemId))
@@ -51,8 +51,8 @@ class ItemControllerMvcTests {
     @Test
     void whenSaveItemThenReturn201() throws Exception {
         var itemId = UUID.fromString("55fd4dd7-3da4-40c8-a940-10c9c3c75e04");
-        var itemDTO = new ItemDTO(itemId, "Item name");
-        var item = new ItemEntity(itemId, "Item name");
+        var itemDTO = new ItemDTO(itemId, "Item name", null);
+        var item = new ItemEntity(itemId, "Item name", null);
         given(itemService.save(item)).willReturn(item);
 
         mockMvc.perform(post(ItemController.API_VERSION + ItemController.PATH)
@@ -66,8 +66,8 @@ class ItemControllerMvcTests {
     @Test
     void whenSaveAlreadyExistsItemThenReturn422() throws Exception {
         var itemId = UUID.fromString("55fd4dd7-3da4-40c8-a940-10c9c3c75e04");
-        var itemDTO = new ItemDTO(itemId, "Item name");
-        var item = new ItemEntity(itemId, "Item name");
+        var itemDTO = new ItemDTO(itemId, "Item name", null);
+        var item = new ItemEntity(itemId, "Item name", null);
         given(itemService.save(item)).willThrow(ItemAlreadyExistsException.class);
 
         mockMvc.perform(post(ItemController.API_VERSION + ItemController.PATH)
@@ -79,8 +79,8 @@ class ItemControllerMvcTests {
     @Test
     void whenUpdateItemThenReturn200() throws Exception {
         var itemId = UUID.fromString("55fd4dd7-3da4-40c8-a940-10c9c3c75e04");
-        var itemDTO = new ItemDTO(itemId, "Item updated name");
-        var item = new ItemEntity(itemId, "Item updated name");
+        var itemDTO = new ItemDTO(itemId, "Item updated name", null);
+        var item = new ItemEntity(itemId, "Item updated name", null);
         given(itemService.update(itemId, item)).willReturn(item);
 
         mockMvc.perform(put(ItemController.API_VERSION + ItemController.PATH + "/" + itemId)

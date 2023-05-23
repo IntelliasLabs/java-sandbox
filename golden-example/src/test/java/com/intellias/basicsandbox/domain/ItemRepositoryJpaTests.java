@@ -29,8 +29,8 @@ class ItemRepositoryJpaTests {
 
     @Test
     void findAllItems() {
-        var item1 = new ItemEntity(null, "Item name");
-        var item2 = new ItemEntity(null, "Item name 2");
+        var item1 = new ItemEntity(null, "Item name", null);
+        var item2 = new ItemEntity(null, "Item name 2", null);
 
         entityManager.persist(item1);
         entityManager.persist(item2);
@@ -44,7 +44,7 @@ class ItemRepositoryJpaTests {
 
     @Test
     void findItemByIdWhenExisting() {
-        var item = new ItemEntity(null, "Item name");
+        var item = new ItemEntity(null, "Item name", null);
         ItemEntity savedItem = entityManager.persist(item);
 
         Optional<ItemEntity> actualItem = itemRepository.findById(savedItem.getId());
@@ -61,7 +61,7 @@ class ItemRepositoryJpaTests {
 
     @Test
     void existsByIdWhenExisting() {
-        var item = new ItemEntity(null, "Item name");
+        var item = new ItemEntity(null, "Item name",  null);
         ItemEntity savedItem = entityManager.persist(item);
 
         boolean existing = itemRepository.existsById(savedItem.getId());
@@ -77,7 +77,7 @@ class ItemRepositoryJpaTests {
 
     @Test
     void deleteByIsbn() {
-        var item = new ItemEntity(null, "Item name");
+        var item = new ItemEntity(null, "Item name",  null);
         ItemEntity savedItem = entityManager.persist(item);
 
         itemRepository.deleteById(savedItem.getId());

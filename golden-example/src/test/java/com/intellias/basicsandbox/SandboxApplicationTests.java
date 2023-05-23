@@ -20,7 +20,7 @@ class SandboxApplicationTests {
 
     @Test
     void whenGetRequestWithIdThenItemReturned() {
-        var itemToCreate = new ItemDTO(null, "Item name");
+        var itemToCreate = new ItemDTO(null, "Item name", null);
 
         ItemDTO expectedItem = webTestClient
                 .post()
@@ -44,7 +44,7 @@ class SandboxApplicationTests {
 
     @Test
     void whenPostRequestThenItemCreated() {
-        var expectedItem = new ItemDTO(null, "Item name");
+        var expectedItem = new ItemDTO(null, "Item name", null);
 
         webTestClient
                 .post()
@@ -61,7 +61,7 @@ class SandboxApplicationTests {
 
     @Test
     void whenPutRequestThenItemUpdated() {
-        var itemToCreate = new ItemDTO(null, "Item name");
+        var itemToCreate = new ItemDTO(null, "Item name", null);
 
         ItemDTO createdItem = webTestClient
                 .post()
@@ -88,7 +88,7 @@ class SandboxApplicationTests {
 
     @Test
     void whenDeleteRequestThenItemDeleted() {
-        var itemToCreate = new ItemDTO(null, "Item name");
+        var itemToCreate = new ItemDTO(null, "Item name", null);
 
         ItemDTO createdItem = webTestClient
                 .post()

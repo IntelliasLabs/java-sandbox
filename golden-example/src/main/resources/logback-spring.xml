@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+
+    <appender name="MaskedCreditCardAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+            <layout class="com.intellias.basicsandbox.util.PatternMaskingLayout">
+                <maskPattern>creditCard=\d+</maskPattern>
+                <maskPattern>(\w*password([^\s+]*)"?\s?[(:?)|(=?)])([^\s]*)</maskPattern>
+
+                <pattern>.%d{date:HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n%ex</pattern>
+            </layout>
+        </encoder>
+    </appender>
+
+    <!-- Apply the custom appender to the root logger -->
+    <root level="INFO">
+        <appender-ref ref="MaskedCreditCardAppender"/>
+    </root>
+</configuration>
