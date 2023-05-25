@@ -11,18 +11,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
-/**
- * Promotes a unified exception handling throughout a whole application.
- */
 @RestControllerAdvice
 public class RestExceptionHandler {
 
-    /**
-     * Handles ItemNotFoundException. Created to encapsulate errors with more detail.
-     *
-     * @param ex the ItemNotFoundException
-     * @return the custom ErrorDTO object
-     */
     @ExceptionHandler(ItemNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorDTO handleItemNotFound(ItemNotFoundException ex) {
@@ -33,12 +24,6 @@ public class RestExceptionHandler {
         return errorDTO;
     }
 
-    /**
-     * Handles ItemAlreadyExistsException. Created to encapsulate errors with more detail.
-     *
-     * @param ex the ItemAlreadyExistsException
-     * @return the custom ErrorDTO object
-     */
     @ExceptionHandler(ItemAlreadyExistsException.class)
     @ResponseStatus(UNPROCESSABLE_ENTITY)
     public ErrorDTO itemAlreadyExistsHandler(ItemAlreadyExistsException ex) {

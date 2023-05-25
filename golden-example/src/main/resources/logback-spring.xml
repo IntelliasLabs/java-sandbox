@@ -4,7 +4,7 @@
 
     <appender name="MaskedCreditCardAppender" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
-            <layout class="com.intellias.basicsandbox.util.PatternMaskingLayout">
+            <layout class="com.intellias.basicsandbox.logging.PatternMaskingLayout">
                 <maskPattern>creditCard=\d+</maskPattern>
                 <maskPattern>(\w*password([^\s+]*)"?\s?[(:?)|(=?)])([^\s]*)</maskPattern>
 
