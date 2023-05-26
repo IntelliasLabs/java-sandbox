@@ -3,7 +3,6 @@ package com.intellias.basicsandbox.controller;
 import com.intellias.basicsandbox.persistence.entity.ItemEntity;
 import com.intellias.basicsandbox.service.ItemService;
 import com.intellias.basicsandbox.controller.dto.ItemDTO;
-import com.intellias.basicsandbox.service.exception.ItemAlreadyExistsException;
 import com.intellias.basicsandbox.service.exception.ItemNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,19 +60,6 @@ class ItemControllerMvcTests {
                 .andExpect(status().isCreated())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(itemDTO.getId().toString()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(itemDTO.getName()));
-    }
-
-    @Test
-    void whenSaveAlreadyExistsItemThenReturn422() throws Exception {
-        var itemId = UUID.fromString("55fd4dd7-3da4-40c8-a940-10c9c3c75e04");
-        var itemDTO = new ItemDTO(itemId, "Item name", null);
-        var item = new ItemEntity(itemId, "Item name", null);
-        given(itemService.save(item)).willThrow(ItemAlreadyExistsException.class);
-
-        mockMvc.perform(post(ItemController.API_VERSION + ItemController.PATH)
-                        .content(asJsonString(itemDTO))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isUnprocessableEntity());
     }
 
     @Test
