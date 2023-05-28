@@ -1,21 +1,21 @@
 package com.intellias.basicsandbox.domain;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
+
 import com.intellias.basicsandbox.persistence.ItemRepository;
 import com.intellias.basicsandbox.persistence.entity.ItemEntity;
 import com.intellias.basicsandbox.service.ItemService;
-import com.intellias.basicsandbox.service.impl.ItemServiceImpl;
+import com.intellias.basicsandbox.service.impl.TransactionalItemService;
+import java.util.Optional;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.Optional;
-import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ItemServiceTest {
@@ -27,7 +27,7 @@ class ItemServiceTest {
 
     @BeforeEach
     void setUp() {
-        itemService = new ItemServiceImpl(itemRepository);
+        itemService = new TransactionalItemService(itemRepository);
     }
 
     @Test
@@ -56,6 +56,21 @@ class ItemServiceTest {
 
         assertEquals(savedItem.getId(), itemId);
         assertEquals(savedItem.getName(), itemToCreate.getName());
+    }
+
+    @Test
+    void updateItemById() {
+        var itemId = UUID.fromString("55fd4dd7-3da4-40c8-a940-10c9c3c75e04");
+        var itemEntity = new ItemEntity(itemId, "Item name", null);
+        ItemEntity changedItem = new ItemEntity(itemId, "Item new name", "Credit card #1");
+        when(itemRepository.findById(itemId)).thenReturn(Optional.of(itemEntity));
+        when(itemRepository.save(eq(changedItem))).thenReturn(changedItem);
+
+        ItemEntity updatedItem = itemService.update(itemId, changedItem);
+
+        assertEquals(updatedItem.getId(), itemId);
+        assertEquals(updatedItem.getName(), changedItem.getName());
+        assertEquals(updatedItem.getCreditCard(), changedItem.getCreditCard());
     }
 
 }

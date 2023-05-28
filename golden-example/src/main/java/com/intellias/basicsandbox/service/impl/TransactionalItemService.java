@@ -4,20 +4,19 @@ import com.intellias.basicsandbox.persistence.ItemRepository;
 import com.intellias.basicsandbox.persistence.entity.ItemEntity;
 import com.intellias.basicsandbox.service.ItemService;
 import com.intellias.basicsandbox.service.exception.ItemNotFoundException;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Transactional
-public class ItemServiceImpl implements ItemService {
+public class TransactionalItemService implements ItemService {
 
     private final ItemRepository itemRepository;
 
@@ -28,13 +27,13 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemEntity update(UUID id, ItemEntity item) {
-        if (!itemRepository.existsById(id)){
-            throw new ItemNotFoundException(id);
-        }
-
-        itemRepository.updateItem(item.getName(), id);
-
         return itemRepository.findById(id)
+                .map(attachedEntity -> {
+                    attachedEntity.setName(item.getName());
+                    attachedEntity.setCreditCard(item.getCreditCard());
+                    itemRepository.save(attachedEntity);
+                    return attachedEntity;
+                })
                 .orElseThrow(() -> new ItemNotFoundException(id));
     }
 
