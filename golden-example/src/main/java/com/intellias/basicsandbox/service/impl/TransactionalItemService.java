@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+// The transactional functionality rely on enabled Transaction Management in PersistenceConfig
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Transactional
