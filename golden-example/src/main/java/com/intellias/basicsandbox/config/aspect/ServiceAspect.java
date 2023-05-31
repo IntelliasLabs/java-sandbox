@@ -22,7 +22,7 @@ import java.util.Arrays;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Slf4j
 @ConditionalOnProperty(name = "app.dev.service-logging-enable", havingValue = "true")
-public class ServiceAspect {
+public final class ServiceAspect {
 
     // path to pointcut used in this Aspect
     private final static String SERVICE_POINTCUT = "com.intellias.basicsandbox.config.aspect.pointcut.CommonJoinPointConfig.serviceExecution()";

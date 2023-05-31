@@ -13,7 +13,7 @@ import java.security.Key;
 import java.util.Base64;
 
 @Converter
-public class EncryptedStringConverter implements AttributeConverter<String, String> {
+public final class EncryptedStringConverter implements AttributeConverter<String, String> {
 
     private static final String AES = "AES";
 
