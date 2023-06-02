@@ -1,14 +1,13 @@
 package com.intellias.basicsandbox.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.intellias.basicsandbox.controller.dto.ItemDTO;
+import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.JsonTest;
 import org.springframework.boot.test.json.JacksonTester;
-
-import java.util.UUID;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @JsonTest
 class ItemJsonTests {
@@ -18,7 +17,7 @@ class ItemJsonTests {
 
     @Test
     void testSerialize() throws Exception {
-        var itemDTO = new ItemDTO(UUID.fromString("55fd4dd7-3da4-40c8-a940-10c9c3c75e04"), "Item name", null);
+        var itemDTO = new ItemDTO(UUID.fromString("55fd4dd7-3da4-40c8-a940-10c9c3c75e04"), "Item name", "credit card", "UAH");
         var jsonContent = json.write(itemDTO);
 
         assertThat(jsonContent).extractingJsonPathStringValue("@.id")
@@ -32,13 +31,15 @@ class ItemJsonTests {
         var content = """
                 {
                     "id": "55fd4dd7-3da4-40c8-a940-10c9c3c75e04",
-                    "name": "Item name"
+                    "name": "Item name",
+                    "creditCard": "credit card",
+                    "currencyCode": "UAH"
                 }
                 """;
 
         assertThat(json.parse(content))
                 .usingRecursiveComparison()
-                .isEqualTo(new ItemDTO(UUID.fromString("55fd4dd7-3da4-40c8-a940-10c9c3c75e04"), "Item name", null));
+                .isEqualTo(new ItemDTO(UUID.fromString("55fd4dd7-3da4-40c8-a940-10c9c3c75e04"), "Item name", "credit card", "UAH"));
     }
 
 }

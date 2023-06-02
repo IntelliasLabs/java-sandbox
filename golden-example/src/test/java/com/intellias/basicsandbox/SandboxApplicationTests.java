@@ -1,5 +1,7 @@
 package com.intellias.basicsandbox;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.intellias.basicsandbox.controller.ItemController;
 import com.intellias.basicsandbox.controller.dto.ErrorDTO;
 import com.intellias.basicsandbox.controller.dto.ItemDTO;
@@ -8,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("integration")
@@ -20,7 +20,7 @@ class SandboxApplicationTests {
 
     @Test
     void whenGetRequestWithIdThenItemReturned() {
-        var itemToCreate = new ItemDTO(null, "Item name", null);
+        var itemToCreate = new ItemDTO(null, "Item name", null, "UAH");
 
         ItemDTO expectedItem = webTestClient
                 .post()
@@ -44,7 +44,7 @@ class SandboxApplicationTests {
 
     @Test
     void whenPostRequestThenItemCreated() {
-        var expectedItem = new ItemDTO(null, "Item name", null);
+        var expectedItem = new ItemDTO(null, "Item name", null, "UAH");
 
         webTestClient
                 .post()
@@ -61,7 +61,7 @@ class SandboxApplicationTests {
 
     @Test
     void whenPutRequestThenItemUpdated() {
-        var itemToCreate = new ItemDTO(null, "Item name", null);
+        var itemToCreate = new ItemDTO(null, "Item name", null, "UAH");
 
         ItemDTO createdItem = webTestClient
                 .post()
@@ -88,7 +88,7 @@ class SandboxApplicationTests {
 
     @Test
     void whenDeleteRequestThenItemDeleted() {
-        var itemToCreate = new ItemDTO(null, "Item name", null);
+        var itemToCreate = new ItemDTO(null, "Item name", null, "UAH");
 
         ItemDTO createdItem = webTestClient
                 .post()

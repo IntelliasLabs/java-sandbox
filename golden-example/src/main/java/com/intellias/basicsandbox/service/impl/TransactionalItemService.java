@@ -32,6 +32,7 @@ public class TransactionalItemService implements ItemService {
                 .map(attachedEntity -> {
                     attachedEntity.setName(item.getName());
                     attachedEntity.setCreditCard(item.getCreditCard());
+                    attachedEntity.setCurrencyCode(item.getCurrencyCode());
                     itemRepository.save(attachedEntity);
                     return attachedEntity;
                 })
