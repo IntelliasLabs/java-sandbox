@@ -64,6 +64,18 @@ class ItemControllerMvcTests {
     }
 
     @Test
+    void whenGetItemByIdLocalizedFoundButLocalizationIsNot_ThenReturnParentLocalizationCurrency() throws Exception {
+        var itemId = UUID.fromString("55fd4dd7-3da4-40c8-a940-10c9c3c75e04");
+        var item = new ItemEntity(itemId, "Item name", "credit card", "UAH");
+        given(itemService.getById(itemId)).willReturn(item);
+
+        String locale = "uk_US";
+        mockMvc.perform(get(ItemController.API_VERSION + ItemController.PATH + "/" + itemId + "/" + locale))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Гривня")));
+    }
+
+    @Test
     void whenSaveItemThenReturn201() throws Exception {
         var itemId = UUID.fromString("55fd4dd7-3da4-40c8-a940-10c9c3c75e04");
         var itemDTO = new ItemDTO(itemId, "Item name", null, null);
