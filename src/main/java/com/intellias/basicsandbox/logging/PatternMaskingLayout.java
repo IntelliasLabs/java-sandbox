@@ -10,7 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Component
-public class PatternMaskingLayout extends PatternLayout {
+public final class PatternMaskingLayout extends PatternLayout {
 
     private Pattern multilinePattern;
     private List<String> maskPatterns = new ArrayList<>();
