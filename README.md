@@ -19,15 +19,17 @@ Tests written for each layer - Repository, Service, Controller and Integration t
 
 ## REST API
 
-|       Endpoint	       | Method   | Req. body | Status | Resp. body | Description    		   	              |
-|:---------------------:|:--------:|:---------:|:------:|:----------:|:-----------------------------------|
-|    `/api/v1/items`    | `GET`    |           |  200   | ItemDTO[]  | Get all the items                  |
-|    `/api/v1/items`    | `POST`   |  ItemDTO  |  201   |  ItemDTO   | Add a new item                     |
-| `/api/v1/items/{id}`  | `GET`    |           |  200   |  ItemDTO   | Get the item with the given ID.    |
-|                       |          |           |  404   |  ErrorDTO  | No item with the given ID exists.  |
-| `/api/v1/items/{id}`  | `PUT`    |  ItemDTO  |  200   |  ItemDTO   | Update the item with the given ID. |
-|                       |          |           |  404   |  ErrorDTO  | No item with the given ID exists.  |
-| `/api/v1/items/{id}`  | `DELETE` |           |  204   |            | Delete the item with the given ID. |
+|           Endpoint	           | Method   | Req. body | Status |    Resp. body    | Description    		   	                                |
+|:-----------------------------:|:--------:|:---------:|:------:|:----------------:|:-----------------------------------------------------|
+|        `/api/v1/items`        | `GET`    |           |  200   |    ItemDTO[]     | Get all the items                                    |
+|        `/api/v1/items`        | `POST`   |  ItemDTO  |  201   |     ItemDTO      | Add a new item                                       |
+|     `/api/v1/items/{id}`      | `GET`    |           |  200   |     ItemDTO      | Get the item with the given ID.                      |
+|                               |          |           |  404   |     ErrorDTO     | No item with the given ID exists.                    |
+| `/api/v1/items/{id}/{locale}` | `GET`    |           |  200   | LocalizedItemDTO | Get the localized item with the given ID and Locale. |
+|                               |          |           |  404   |     ErrorDTO     | No item with the given ID exists.                    |
+|     `/api/v1/items/{id}`      | `PUT`    |  ItemDTO  |  200   |     ItemDTO      | Update the item with the given ID.                   |
+|                               |          |           |  404   |     ErrorDTO     | No item with the given ID exists.                    |
+|     `/api/v1/items/{id}`      | `DELETE` |           |  204   |                  | Delete the item with the given ID.                   |
 
 
 ## Useful Commands
@@ -81,3 +83,10 @@ docker exec -it sandbox-postgres psql -U user -d sandbox_db
 | `\connect sandbox_db` | Connect to specific database.  |
 |         `\dt`         | List all tables.               |
 |        `\quit`        | Quit interactive psql console. |
+
+### Internationalization (i18n)
+
+#### i18n API example
+In a case you need translated or adjusted response according to the certain location, there is an example with translated currency 
+code by requested locale on the `/api/v1/items/{id}/{locale}` endpoint. It translates Entity field `currencyCode` with the most 
+matching locale among those present in ResourceBundle files in the `src/main/resources/resourcebundle` directory.
