@@ -162,6 +162,12 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
+                    <image>
+                        <env>
+                            <BP_JVM_VERSION>17</BP_JVM_VERSION>
+                            <BP_IMAGE_NAME>${project.name}</BP_IMAGE_NAME>
+                        </env>
+                    </image>
                 </configuration>
             </plugin>
         </plugins>
