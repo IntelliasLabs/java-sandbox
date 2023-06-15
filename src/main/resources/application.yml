@@ -7,8 +7,8 @@ logging:
     org: info
     com:
       intellias:
-        basicsandbox: # You can change desired logging level for specific package.
-          controller: INFO # For example for all classes inside controller packages to use DEBUG level: logging.level.com.intellias.basicsandbox.controller=DEBUG
+        parking: # You can change desired logging level for specific package.
+          controller: INFO # For example for all classes inside controller packages to use DEBUG level: logging.level.com.intellias.parking.controller=DEBUG
 spring:
 
   # Datasource
