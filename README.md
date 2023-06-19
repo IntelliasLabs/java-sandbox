@@ -31,6 +31,7 @@ Tests written for each layer - Repository, Service, Controller and Integration t
 |                               |          |           |  404   |     ErrorDTO     | No item with the given ID exists.                    |
 |     `/api/v1/items/{id}`      | `DELETE` |           |  204   |                  | Delete the item with the given ID.                   |
 
+[Swagger UI](http://localhost:8080/swagger-ui/index.html) is available.
 
 ## Useful Commands
 

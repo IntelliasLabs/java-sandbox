@@ -115,6 +115,13 @@
             <artifactId>postgresql</artifactId>
         </dependency>
 
+        <!--        Swagger:        -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.1.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -155,6 +162,12 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
+                    <image>
+                        <env>
+                            <BP_JVM_VERSION>17</BP_JVM_VERSION>
+                            <BP_IMAGE_NAME>${project.name}</BP_IMAGE_NAME>
+                        </env>
+                    </image>
                 </configuration>
             </plugin>
         </plugins>
