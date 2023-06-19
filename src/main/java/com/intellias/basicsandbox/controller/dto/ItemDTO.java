@@ -15,7 +15,7 @@ public class ItemDTO {
 
     private UUID id;
 
-    @Size(min = 1, max = 255)
+    @Size(min = 1, max = 255, message = "{name.notempty}")
     @NotNull
     private String name;
 

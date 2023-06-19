@@ -14,7 +14,10 @@ import com.intellias.basicsandbox.controller.dto.ItemDTO;
 import com.intellias.basicsandbox.persistence.entity.ItemEntity;
 import com.intellias.basicsandbox.service.ItemService;
 import com.intellias.basicsandbox.service.exception.ItemNotFoundException;
+import java.nio.charset.StandardCharsets;
+import java.util.Locale;
 import java.util.UUID;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -73,6 +76,42 @@ class ItemControllerMvcTests {
         mockMvc.perform(get(ItemController.API_VERSION + ItemController.PATH + "/" + itemId + "/" + locale))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("Гривня")));
+    }
+
+    @Test
+    void whenNameIsEmpty_ThenReturnLocalizedMessage_onUpdate() throws Exception {
+        var itemId = UUID.fromString("55fd4dd7-3da4-40c8-a940-10c9c3c75e04");
+        var itemDTO = new ItemDTO(itemId, "", "4916338506082835 Q", "UAH");
+
+        String contentAsString = mockMvc.perform(put(ItemController.API_VERSION + ItemController.PATH + "/" + itemId)
+                        .content(asJsonString(itemDTO))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .locale(Locale.forLanguageTag("uk-UA")))
+                .andExpect(status().is4xxClientError())
+                .andReturn()
+                .getResponse()
+                .getContentAsString(StandardCharsets.UTF_8);
+
+        Assertions.assertTrue(contentAsString.contains("[name] Вкажіть імʼя до 250 символів. "));
+        Assertions.assertTrue(contentAsString.contains("[creditCard] має відповідати шаблону \\\"^(?:4[0-9]{12}("));
+    }
+
+    @Test
+    void whenNameIsEmptyAndTranslationIsMissed_ThenReturnLocalizedMessageFromParentLocale_onUpdate() throws Exception {
+        var itemId = UUID.fromString("55fd4dd7-3da4-40c8-a940-10c9c3c75e04");
+        var itemDTO = new ItemDTO(itemId, "", "4916338506082835 Q", "UAH");
+
+        String contentAsString = mockMvc.perform(put(ItemController.API_VERSION + ItemController.PATH + "/" + itemId)
+                        .content(asJsonString(itemDTO))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .locale(Locale.forLanguageTag("uk")))
+                .andExpect(status().is4xxClientError())
+                .andReturn()
+                .getResponse()
+                .getContentAsString(StandardCharsets.UTF_8);
+
+        Assertions.assertTrue(contentAsString.contains("[name] Add a name up to 250 characters."));
+        Assertions.assertTrue(contentAsString.contains("[creditCard] має відповідати шаблону \\\"^(?:4[0-9]{12}("));
     }
 
     @Test

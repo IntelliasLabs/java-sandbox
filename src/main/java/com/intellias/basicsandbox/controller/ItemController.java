@@ -44,43 +44,43 @@ public class ItemController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ItemDTO> update(@PathVariable("id") final UUID id, @Valid @RequestBody final ItemDTO item) {
+    public ItemDTO update(@PathVariable("id") final UUID id, @Valid @RequestBody final ItemDTO item) {
         log.debug("Item with id {} to update: {}", id, item);
         final ItemEntity updatedItem = itemService.update(id, ItemMapper.INSTANCE.toEntity(item));
         log.info("Item with id {} successfully updated: {}", id, updatedItem);
 
-        return new ResponseEntity<>(ItemMapper.INSTANCE.toDTO(updatedItem), HttpStatus.OK);
+        return ItemMapper.INSTANCE.toDTO(updatedItem);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ItemDTO> getById(@PathVariable("id") final UUID id) {
+    public ItemDTO getById(@PathVariable("id") final UUID id) {
         final ItemEntity item = itemService.getById(id);
 
-        return new ResponseEntity<>(ItemMapper.INSTANCE.toDTO(item), HttpStatus.OK);
+        return ItemMapper.INSTANCE.toDTO(item);
     }
 
     // UTF-8 response encoding is important for serialization of translated values
     @GetMapping(value = "/{id}/{locale}", produces = "application/hal+json;charset=utf8")
-    public ResponseEntity<ItemDTO> getByIdLocalized(@PathVariable("id") final UUID id,
+    public LocalizedItemDTO getByIdLocalized(@PathVariable("id") final UUID id,
             @PathVariable("locale") final Locale locale) {
         final ItemEntity item = itemService.getById(id);
-        ResourceBundle localizedResource = ResourceBundle.getBundle("resourcebundle.resource", locale);
+        ResourceBundle localizedResource = ResourceBundle.getBundle("resourcebundle.messages", locale);
 
         ItemDTO itemDTO = ItemMapper.INSTANCE.toDTO(item);
         final String localizationKeyPrefix = "currency.";
         String translatedValue = localizedResource.getString(localizationKeyPrefix + itemDTO.getCurrencyCode());
-        return ResponseEntity.ok(new LocalizedItemDTO(itemDTO, translatedValue) );
+        return new LocalizedItemDTO(itemDTO, translatedValue);
     }
 
     @GetMapping
-    public ResponseEntity<List<ItemDTO>> getAll() {
+    public List<ItemDTO> getAll() {
         final List<ItemDTO> items = itemService.findAll()
                 .stream()
                 .map(ItemMapper.INSTANCE::toDTO)
                 .toList();
 
         log.info("Items found: {}", items);
-        return new ResponseEntity<>(items, HttpStatus.OK);
+        return items;
     }
 
     @DeleteMapping("/{id}")
