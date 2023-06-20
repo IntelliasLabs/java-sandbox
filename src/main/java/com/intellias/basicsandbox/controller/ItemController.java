@@ -1,13 +1,11 @@
 package com.intellias.basicsandbox.controller;
 
+import com.intellias.basicsandbox.controller.dto.ErrorDTO;
 import com.intellias.basicsandbox.controller.dto.ItemDTO;
 import com.intellias.basicsandbox.controller.dto.LocalizedItemDTO;
 import com.intellias.basicsandbox.controller.mapper.ItemMapper;
-import com.intellias.basicsandbox.controller.dto.ErrorDTO;
 import com.intellias.basicsandbox.persistence.entity.ItemEntity;
 import com.intellias.basicsandbox.service.ItemService;
-import com.intellias.basicsandbox.controller.dto.ItemDTO;
-import com.intellias.basicsandbox.controller.mapper.ItemMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -84,6 +82,12 @@ public class ItemController {
         return ItemMapper.INSTANCE.toDTO(item);
     }
 
+    @Operation(summary = "Find item by id with localized fields (currency code)")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Found item",
+                    content = {@Content(mediaType = "application/hal+json;charset=utf8", schema = @Schema(implementation = ItemDTO.class)) }),
+            @ApiResponse(responseCode = "404", description = "Error",
+                    content = {@Content(mediaType = "application/hal+json;charset=utf8", schema = @Schema(implementation = ErrorDTO.class)) }) })
     // UTF-8 response encoding is important for serialization of translated values
     @GetMapping(value = "/{id}/{locale}", produces = "application/hal+json;charset=utf8")
     public LocalizedItemDTO getByIdLocalized(@PathVariable("id") final UUID id,

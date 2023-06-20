@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -14,12 +15,14 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+@Slf4j
 @RestControllerAdvice
 public class ValidationExceptionHandler {
 
     @ResponseStatus(BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ErrorDTO methodArgumentNotValidException(MethodArgumentNotValidException ex, HttpServletRequest request) {
+        log.debug("Handled argument validation exception. [{}]", ex.getMessage());
         BindingResult result = ex.getBindingResult();
         List<FieldError> fieldErrors = result.getFieldErrors();
         String langHeader = request.getHeader("Accept-Language");
@@ -27,19 +30,21 @@ public class ValidationExceptionHandler {
     }
 
     private ErrorDTO processFieldErrors(List<FieldError> fieldErrors, String language) {
-        StringBuilder validationErrorMessage = new StringBuilder();
+        StringBuilder validationErrorMessageBuilder = new StringBuilder();
         Locale locale = extractLocaleFromHeader(language);
         ResourceBundle localizedResource = ResourceBundle.getBundle("resourcebundle.messages", locale);
         for (org.springframework.validation.FieldError fieldError: fieldErrors) {
             if (fieldError.getDefaultMessage() != null) {
-                validationErrorMessage.append("[")
+                validationErrorMessageBuilder.append("[")
                         .append(fieldError.getField())
                         .append("] ")
                         .append(applyCustomTranslation(localizedResource, fieldError))
                         .append(". ");
             }
         }
-        return new ErrorDTO(BAD_REQUEST, validationErrorMessage.toString());
+        String validationMessage = validationErrorMessageBuilder.toString();
+        log.info("Argument validation response [{}]", validationMessage);
+        return new ErrorDTO(BAD_REQUEST, validationMessage);
     }
 
     private String applyCustomTranslation(ResourceBundle localizedResource, FieldError fieldError) {

@@ -87,7 +87,12 @@ docker exec -it sandbox-postgres psql -U user -d sandbox_db
 
 ### Internationalization (i18n)
 
-#### i18n API example
+#### Data localization 
 In a case you need translated or adjusted response according to the certain location, there is an example with translated currency 
 code by requested locale on the `/api/v1/items/{id}/{locale}` endpoint. It translates Entity field `currencyCode` with the most 
 matching locale among those present in ResourceBundle files in the `src/main/resources/resourcebundle` directory.
+
+#### Exception localization
+For translation of REST request arguments validation messages, there is a ValidationExceptionHandler class that handles  
+MethodArgumentNotValidException type exceptions and translates its messages by the language header.
+Validation happens before the REST controllers method invocation.
