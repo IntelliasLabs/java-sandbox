@@ -33,7 +33,7 @@ class ItemServiceTest {
     @Test
     void whenItemExistsThenGetById() {
         var itemId = UUID.fromString("55fd4dd7-3da4-40c8-a940-10c9c3c75e04");
-        var itemEntity = new ItemEntity(itemId, "Item name", null);
+        var itemEntity = new ItemEntity(itemId, "Item name", null, null);
         when(itemRepository.findById(itemId)).thenReturn(Optional.of(itemEntity));
 
         ItemEntity existItem = itemService.getById(itemId);
@@ -47,8 +47,8 @@ class ItemServiceTest {
         var itemId = UUID.fromString("55fd4dd7-3da4-40c8-a940-10c9c3c75e04");
         var itemName = "Item name";
 
-        var itemToCreate = new ItemEntity(null, itemName, null);
-        var itemEntity = new ItemEntity(itemId, itemName, null);
+        var itemToCreate = new ItemEntity(null, itemName, null, null);
+        var itemEntity = new ItemEntity(itemId, itemName, null, null);
 
         when(itemRepository.save(any())).thenReturn(itemEntity);
 
@@ -61,8 +61,8 @@ class ItemServiceTest {
     @Test
     void updateItemById() {
         var itemId = UUID.fromString("55fd4dd7-3da4-40c8-a940-10c9c3c75e04");
-        var itemEntity = new ItemEntity(itemId, "Item name", null);
-        ItemEntity changedItem = new ItemEntity(itemId, "Item new name", "Credit card #1");
+        var itemEntity = new ItemEntity(itemId, "Item name", null, null);
+        ItemEntity changedItem = new ItemEntity(itemId, "Item new name", "Credit card #1", "UAH");
         when(itemRepository.findById(itemId)).thenReturn(Optional.of(itemEntity));
         when(itemRepository.save(eq(changedItem))).thenReturn(changedItem);
 
