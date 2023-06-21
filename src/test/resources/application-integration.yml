@@ -6,3 +6,4 @@ spring:
     url: jdbc:tc:postgresql:14.4:///
   flyway:
     baselineOnMigrate: true
+    cleanDisabled: false
