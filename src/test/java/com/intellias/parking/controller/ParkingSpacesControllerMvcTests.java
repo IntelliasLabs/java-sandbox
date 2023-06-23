@@ -31,7 +31,7 @@ public class ParkingSpacesControllerMvcTests {
     private ParkingSpaceRepository parkingSpaceRepository;
 
     @BeforeEach
-    void clearDatabase(@Autowired Flyway flyway) {
+    public void clearDatabase(@Autowired Flyway flyway) {
         flyway.clean();
         flyway.migrate();
     }
@@ -65,6 +65,37 @@ public class ParkingSpacesControllerMvcTests {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(0)));
+    }
+
+    @Test
+    public void getById_ShouldReturn400WithErrorMessage_WhenPathParameterIsInvalid() throws Exception {
+        mockMvc.perform(get(ParkingSpacesController.API_VERSION + ParkingSpacesController.PATH + "/-1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", equalTo("Record ID should be a positive integer.")));
+    }
+
+    @Test
+    public void getById_ShouldReturn404WithErrorMessage_WhenParkingSpaceWithThisIdDoesNotExist() throws Exception {
+        mockMvc.perform(get(ParkingSpacesController.API_VERSION + ParkingSpacesController.PATH + "/100")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message", equalTo("Parking space with ID 100 not found.")));
+    }
+
+    @Test
+    public void getById_ShouldReturn200WithParkingSpace_WhenParkingSpaceWithThisIdExists() throws Exception {
+        ParkingSpaceEntity addedEntity = parkingSpaceRepository.save(ParkingSpaceEntity.builder()
+                .name("First Parking Space")
+                .status(Status.AVAILABLE)
+                .build());
+
+        mockMvc.perform(get(ParkingSpacesController.API_VERSION + ParkingSpacesController.PATH + "/" + addedEntity.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", equalTo(1)))
+                .andExpect(jsonPath("$.name", equalTo(addedEntity.getName())))
+                .andExpect(jsonPath("$.status", equalTo(addedEntity.getStatus().toString())));
     }
 
 }

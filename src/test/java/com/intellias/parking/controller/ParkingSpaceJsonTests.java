@@ -18,7 +18,7 @@ public class ParkingSpaceJsonTests {
     private JacksonTester<ParkingSpaceDTO> json;
 
     @Test
-    void testSerialize() throws Exception {
+    public void testSerialize() throws Exception {
         ParkingSpaceDTO parkingSpaceDTO = new ParkingSpaceDTO(1, "First parking space", Status.AVAILABLE);
         JsonContent<ParkingSpaceDTO> jsonContent = json.write(parkingSpaceDTO);
 
@@ -31,7 +31,7 @@ public class ParkingSpaceJsonTests {
     }
 
     @Test
-    void testDeserialize() throws Exception {
+    public void testDeserialize() throws Exception {
         var content = """
                 {
                     "id": "1",

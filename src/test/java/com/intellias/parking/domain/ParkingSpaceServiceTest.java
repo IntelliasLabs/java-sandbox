@@ -6,6 +6,7 @@ import com.intellias.parking.persistence.ParkingSpaceRepository;
 import com.intellias.parking.persistence.entity.ParkingSpaceEntity;
 import com.intellias.parking.persistence.entity.Status;
 import com.intellias.parking.service.ParkingSpaceService;
+import com.intellias.parking.service.exception.RecordNotFoundException;
 import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("integration")
@@ -31,12 +33,12 @@ public class ParkingSpaceServiceTest {
     private ParkingSpaceService parkingSpaceService;
 
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         parkingSpaceService = new ParkingSpaceService(parkingSpaceRepository, parkingSpaceMapper);
     }
 
     @BeforeEach
-    void clearDatabase(@Autowired Flyway flyway) {
+    public void clearDatabase(@Autowired Flyway flyway) {
         flyway.clean();
         flyway.migrate();
     }
@@ -64,6 +66,26 @@ public class ParkingSpaceServiceTest {
         List<ParkingSpaceDTO> actual = parkingSpaceService.findAll();
 
         assertEquals(expected, actual);
+    }
+
+    @Test
+    public void findById_ShouldReturnParkingSpace_WhenParkingSpaceWithThisIdExists() {
+        ParkingSpaceEntity addedEntity = parkingSpaceRepository.save(ParkingSpaceEntity.builder()
+                .name("First Parking Space")
+                .status(Status.AVAILABLE)
+                .build());
+
+
+        ParkingSpaceDTO expected = parkingSpaceMapper.toDTO(addedEntity);
+        ParkingSpaceDTO actual = parkingSpaceService.getById(addedEntity.getId());
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void findById_ShouldThrowException_WhenParkingSpaceWithThisIdDoesNotExist() {
+        RecordNotFoundException exception = assertThrows(RecordNotFoundException.class, () -> parkingSpaceService.getById(100L));
+        assertEquals("Parking space with ID 100 not found.", exception.getMessage());
     }
 
 }
