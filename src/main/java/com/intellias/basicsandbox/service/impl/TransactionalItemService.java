@@ -6,7 +6,6 @@ import com.intellias.basicsandbox.service.ItemService;
 import com.intellias.basicsandbox.service.exception.ItemNotFoundException;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +50,7 @@ public class TransactionalItemService implements ItemService {
     public List<ItemEntity> findAll() {
         return StreamSupport.stream(itemRepository.findAll().spliterator(), false) // Note: if you use more advanced repository
                 // interface like JpaRepository it usually has better type [List, Stream] for method findAll()
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
