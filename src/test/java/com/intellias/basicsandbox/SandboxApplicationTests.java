@@ -76,7 +76,7 @@ class SandboxApplicationTests {
 
         webTestClient
                 .put()
-                .uri(ItemController.API_VERSION + ItemController.PATH + "/" + createdItem.getId())
+                .uri(ItemController.API_VERSION + ItemController.PATH)
                 .bodyValue(createdItem)
                 .exchange()
                 .expectStatus().isOk()
