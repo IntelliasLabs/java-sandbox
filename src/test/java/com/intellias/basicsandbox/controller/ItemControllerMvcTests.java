@@ -83,7 +83,7 @@ class ItemControllerMvcTests {
         var itemId = UUID.fromString("55fd4dd7-3da4-40c8-a940-10c9c3c75e04");
         var itemDTO = new ItemDTO(itemId, "", "4916338506082835 Q", "UAH");
 
-        String contentAsString = mockMvc.perform(put(ItemController.API_VERSION + ItemController.PATH + "/" + itemId)
+        String contentAsString = mockMvc.perform(put(ItemController.API_VERSION + ItemController.PATH)
                         .content(asJsonString(itemDTO))
                         .contentType(MediaType.APPLICATION_JSON)
                         .locale(Locale.forLanguageTag("uk-UA")))
@@ -101,7 +101,7 @@ class ItemControllerMvcTests {
         var itemId = UUID.fromString("55fd4dd7-3da4-40c8-a940-10c9c3c75e04");
         var itemDTO = new ItemDTO(itemId, "", "4916338506082835 Q", "UAH");
 
-        String contentAsString = mockMvc.perform(put(ItemController.API_VERSION + ItemController.PATH + "/" + itemId)
+        String contentAsString = mockMvc.perform(put(ItemController.API_VERSION + ItemController.PATH)
                         .content(asJsonString(itemDTO))
                         .contentType(MediaType.APPLICATION_JSON)
                         .locale(Locale.forLanguageTag("uk")))
@@ -136,7 +136,7 @@ class ItemControllerMvcTests {
         var item = new ItemEntity(itemId, "Item updated name", null, null);
         given(itemService.update(itemId, item)).willReturn(item);
 
-        mockMvc.perform(put(ItemController.API_VERSION + ItemController.PATH + "/" + itemId)
+        mockMvc.perform(put(ItemController.API_VERSION + ItemController.PATH)
                         .content(asJsonString(itemDTO))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())

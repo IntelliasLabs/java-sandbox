@@ -4,6 +4,8 @@ import com.intellias.basicsandbox.controller.dto.ErrorDTO;
 import com.intellias.basicsandbox.controller.dto.ItemDTO;
 import com.intellias.basicsandbox.controller.dto.LocalizedItemDTO;
 import com.intellias.basicsandbox.controller.mapper.ItemMapper;
+import com.intellias.basicsandbox.controller.validation.group.Create;
+import com.intellias.basicsandbox.controller.validation.group.Update;
 import com.intellias.basicsandbox.persistence.entity.ItemEntity;
 import com.intellias.basicsandbox.service.ItemService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,7 +13,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -21,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,8 +37,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 @Slf4j
 public class ItemController {
-    public final static String PATH = "items";
-    public final static String API_VERSION = "/api/v1/";
+
+    public static final String PATH = "items";
+    public static final String API_VERSION = "/api/v1/";
 
     private final ItemService itemService;
 
@@ -47,7 +50,7 @@ public class ItemController {
             @ApiResponse(responseCode = "404", description = "Error",
                     content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDTO.class)) }) })
     @PostMapping
-    public ResponseEntity<ItemDTO> save(@Valid @RequestBody final ItemDTO item) {
+    public ResponseEntity<ItemDTO> save(@Validated(Create.class) @RequestBody final ItemDTO item) {
         log.debug("Item to save: {}", item);
         final ItemEntity savedItem = itemService.save(ItemMapper.INSTANCE.toEntity(item));
         log.info("Item successfully saved: {}", savedItem);
@@ -61,11 +64,11 @@ public class ItemController {
                     content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ItemDTO.class)) }),
             @ApiResponse(responseCode = "404", description = "Error",
                     content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDTO.class)) }) })
-    @PutMapping("/{id}")
-    public ItemDTO update(@PathVariable("id") final UUID id, @Valid @RequestBody final ItemDTO item) {
-        log.debug("Item with id {} to update: {}", id, item);
-        final ItemEntity updatedItem = itemService.update(id, ItemMapper.INSTANCE.toEntity(item));
-        log.info("Item with id {} successfully updated: {}", id, updatedItem);
+    @PutMapping
+    public ItemDTO update(@Validated(Update.class) @RequestBody final ItemDTO item) {
+        log.debug("Item with id {} to update: {}", item.getId(), item);
+        final ItemEntity updatedItem = itemService.update(item.getId(), ItemMapper.INSTANCE.toEntity(item));
+        log.info("Item with id {} successfully updated: {}", item.getId(), updatedItem);
         return ItemMapper.INSTANCE.toDTO(updatedItem);
     }
 
