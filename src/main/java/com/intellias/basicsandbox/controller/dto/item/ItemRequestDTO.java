@@ -1,4 +1,4 @@
-package com.intellias.basicsandbox.controller.dto;
+package com.intellias.basicsandbox.controller.dto.item;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -7,15 +7,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ItemDTO {
-
-    UUID id;
-
+public class ItemRequestDTO {
     @Size(min = 1, max = 255)
     @NotNull
     String name;

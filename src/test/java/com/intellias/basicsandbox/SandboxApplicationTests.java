@@ -2,7 +2,7 @@ package com.intellias.basicsandbox;
 
 import com.intellias.basicsandbox.controller.ItemController;
 import com.intellias.basicsandbox.controller.dto.ErrorDTO;
-import com.intellias.basicsandbox.controller.dto.ItemDTO;
+import com.intellias.basicsandbox.controller.dto.item.ItemSummaryDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,15 +20,15 @@ class SandboxApplicationTests {
 
     @Test
     void whenGetRequestWithIdThenItemReturned() {
-        var itemToCreate = new ItemDTO(null, "Item name", null);
+        var itemToCreate = new ItemSummaryDTO(null, "Item name", null);
 
-        ItemDTO expectedItem = webTestClient
+        ItemSummaryDTO expectedItem = webTestClient
                 .post()
                 .uri(ItemController.API_VERSION + ItemController.PATH)
                 .bodyValue(itemToCreate)
                 .exchange()
                 .expectStatus().isCreated()
-                .expectBody(ItemDTO.class).value(item -> assertThat(item).isNotNull())
+                .expectBody(ItemSummaryDTO.class).value(item -> assertThat(item).isNotNull())
                 .returnResult().getResponseBody();
 
         webTestClient
@@ -36,7 +36,7 @@ class SandboxApplicationTests {
                 .uri(ItemController.API_VERSION + ItemController.PATH + "/" + expectedItem.getId())
                 .exchange()
                 .expectStatus().is2xxSuccessful()
-                .expectBody(ItemDTO.class).value(actualItem -> {
+                .expectBody(ItemSummaryDTO.class).value(actualItem -> {
                     assertThat(actualItem).isNotNull();
                     assertThat(actualItem.getId()).isEqualTo(expectedItem.getId());
                 });
@@ -44,7 +44,7 @@ class SandboxApplicationTests {
 
     @Test
     void whenPostRequestThenItemCreated() {
-        var expectedItem = new ItemDTO(null, "Item name", null);
+        var expectedItem = new ItemSummaryDTO(null, "Item name", null);
 
         webTestClient
                 .post()
@@ -52,7 +52,7 @@ class SandboxApplicationTests {
                 .bodyValue(expectedItem)
                 .exchange()
                 .expectStatus().isCreated()
-                .expectBody(ItemDTO.class).value(actualItem -> {
+                .expectBody(ItemSummaryDTO.class).value(actualItem -> {
                     assertThat(actualItem).isNotNull();
                     assertThat(actualItem.getId()).isNotNull();
                     assertThat(actualItem.getName()).isEqualTo(expectedItem.getName());
@@ -61,15 +61,15 @@ class SandboxApplicationTests {
 
     @Test
     void whenPutRequestThenItemUpdated() {
-        var itemToCreate = new ItemDTO(null, "Item name", null);
+        var itemToCreate = new ItemSummaryDTO(null, "Item name", null);
 
-        ItemDTO createdItem = webTestClient
+        ItemSummaryDTO createdItem = webTestClient
                 .post()
                 .uri(ItemController.API_VERSION + ItemController.PATH)
                 .bodyValue(itemToCreate)
                 .exchange()
                 .expectStatus().isCreated()
-                .expectBody(ItemDTO.class).value(item -> assertThat(item).isNotNull())
+                .expectBody(ItemSummaryDTO.class).value(item -> assertThat(item).isNotNull())
                 .returnResult().getResponseBody();
 
         createdItem.setName("Updated name");
@@ -80,7 +80,7 @@ class SandboxApplicationTests {
                 .bodyValue(createdItem)
                 .exchange()
                 .expectStatus().isOk()
-                .expectBody(ItemDTO.class).value(actualItem -> {
+                .expectBody(ItemSummaryDTO.class).value(actualItem -> {
                     assertThat(actualItem).isNotNull();
                     assertThat(actualItem.getName()).isEqualTo(createdItem.getName());
                 });
@@ -88,15 +88,15 @@ class SandboxApplicationTests {
 
     @Test
     void whenDeleteRequestThenItemDeleted() {
-        var itemToCreate = new ItemDTO(null, "Item name", null);
+        var itemToCreate = new ItemSummaryDTO(null, "Item name", null);
 
-        ItemDTO createdItem = webTestClient
+        ItemSummaryDTO createdItem = webTestClient
                 .post()
                 .uri(ItemController.API_VERSION + ItemController.PATH)
                 .bodyValue(itemToCreate)
                 .exchange()
                 .expectStatus().isCreated()
-                .expectBody(ItemDTO.class).value(item -> assertThat(item).isNotNull())
+                .expectBody(ItemSummaryDTO.class).value(item -> assertThat(item).isNotNull())
                 .returnResult().getResponseBody();
 
         webTestClient

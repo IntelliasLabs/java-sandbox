@@ -1,9 +1,10 @@
 package com.intellias.basicsandbox.controller;
 
 import com.intellias.basicsandbox.controller.dto.ErrorDTO;
+import com.intellias.basicsandbox.controller.dto.item.ItemRequestDTO;
 import com.intellias.basicsandbox.persistence.entity.ItemEntity;
 import com.intellias.basicsandbox.service.ItemService;
-import com.intellias.basicsandbox.controller.dto.ItemDTO;
+import com.intellias.basicsandbox.controller.dto.item.ItemSummaryDTO;
 import com.intellias.basicsandbox.controller.mapper.ItemMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -34,55 +35,55 @@ public class ItemController {
     @Operation(summary = "Create new item")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Created item",
-                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ItemDTO.class)) }),
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ItemSummaryDTO.class)) }),
             @ApiResponse(responseCode = "404", description = "Error",
                     content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDTO.class)) }) })
     @PostMapping
-    public ResponseEntity<ItemDTO> save(@Valid @RequestBody final ItemDTO item) {
+    public ResponseEntity<ItemSummaryDTO> save(@Valid @RequestBody final ItemRequestDTO item) {
         log.debug("Item to save: {}", item);
-        final ItemEntity savedItem = itemService.save(ItemMapper.INSTANCE.toEntity(item));
+        final ItemEntity savedItem = itemService.save(ItemMapper.INSTANCE.toEntityFromRequestDTO(item));
         log.info("Item successfully saved: {}", savedItem);
 
-        return new ResponseEntity<>(ItemMapper.INSTANCE.toDTO(savedItem), HttpStatus.CREATED);
+        return new ResponseEntity<>(ItemMapper.INSTANCE.toSummaryDTO(savedItem), HttpStatus.CREATED);
     }
 
     @Operation(summary = "Change item by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Updated item",
-                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ItemDTO.class)) }),
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ItemSummaryDTO.class)) }),
             @ApiResponse(responseCode = "404", description = "Error",
                     content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDTO.class)) }) })
     @PutMapping("/{id}")
-    public ItemDTO update(@PathVariable("id") final UUID id, @Valid @RequestBody final ItemDTO item) {
+    public ItemSummaryDTO update(@PathVariable("id") final UUID id, @Valid @RequestBody final ItemRequestDTO item) {
         log.debug("Item with id {} to update: {}", id, item);
-        final ItemEntity updatedItem = itemService.update(id, ItemMapper.INSTANCE.toEntity(item));
+        final ItemEntity updatedItem = itemService.update(id, ItemMapper.INSTANCE.toEntityFromRequestDTO(item));
         log.info("Item with id {} successfully updated: {}", id, updatedItem);
-        return ItemMapper.INSTANCE.toDTO(updatedItem);
+        return ItemMapper.INSTANCE.toSummaryDTO(updatedItem);
     }
 
     @Operation(summary = "Find item by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found item",
-                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ItemDTO.class)) }),
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ItemSummaryDTO.class)) }),
             @ApiResponse(responseCode = "404", description = "Error",
                     content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDTO.class)) }) })
     @GetMapping("/{id}")
-    public ItemDTO getById(@PathVariable("id") final UUID id) {
+    public ItemSummaryDTO getById(@PathVariable("id") final UUID id) {
         final ItemEntity item = itemService.getById(id);
-        return ItemMapper.INSTANCE.toDTO(item);
+        return ItemMapper.INSTANCE.toSummaryDTO(item);
     }
 
     @Operation(summary = "Get all items")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found items",
-                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ItemDTO.class)) }),
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ItemSummaryDTO.class)) }),
             @ApiResponse(responseCode = "404", description = "Error",
                     content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDTO.class)) }) })
     @GetMapping
-    public List<ItemDTO> getAll() {
-        List<ItemDTO> items = itemService.findAll()
+    public List<ItemSummaryDTO> getAll() {
+        List<ItemSummaryDTO> items = itemService.findAll()
                 .stream()
-                .map(ItemMapper.INSTANCE::toDTO)
+                .map(ItemMapper.INSTANCE::toSummaryDTO)
                 .toList();
 
         log.info("Items found: {}", items);
@@ -92,7 +93,7 @@ public class ItemController {
     @Operation(summary = "Delete item by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Item deleted",
-                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ItemDTO.class)) }),
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ItemSummaryDTO.class)) }),
             @ApiResponse(responseCode = "404", description = "Item not found", content = @Content) })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") final UUID id) {

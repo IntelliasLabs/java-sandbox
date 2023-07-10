@@ -1,8 +1,10 @@
 package com.intellias.basicsandbox.controller;
 
+import com.intellias.basicsandbox.controller.dto.item.ItemRequestDTO;
+import com.intellias.basicsandbox.controller.mapper.ItemMapper;
 import com.intellias.basicsandbox.persistence.entity.ItemEntity;
 import com.intellias.basicsandbox.service.ItemService;
-import com.intellias.basicsandbox.controller.dto.ItemDTO;
+import com.intellias.basicsandbox.controller.dto.item.ItemSummaryDTO;
 import com.intellias.basicsandbox.service.exception.ItemNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +17,12 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.util.UUID;
 
 import static com.intellias.basicsandbox.utils.TestUtils.asJsonString;
+import static org.hamcrest.Matchers.equalTo;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(ItemController.class)
@@ -50,31 +56,32 @@ class ItemControllerMvcTests {
     @Test
     void whenSaveItemThenReturn201() throws Exception {
         var itemId = UUID.fromString("55fd4dd7-3da4-40c8-a940-10c9c3c75e04");
-        var itemDTO = new ItemDTO(itemId, "Item name", null);
+        var itemRequestDTO = new ItemRequestDTO("Item name", null);
         var item = new ItemEntity(itemId, "Item name", null);
-        given(itemService.save(item)).willReturn(item);
+        given(itemService.save(any())).willReturn(item);
 
         mockMvc.perform(post(ItemController.API_VERSION + ItemController.PATH)
-                        .content(asJsonString(itemDTO))
+                        .content(asJsonString(itemRequestDTO))
                         .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
                 .andExpect(status().isCreated())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(itemDTO.getId().toString()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(itemDTO.getName()));
+                .andExpect(jsonPath("$.id", equalTo(itemId.toString())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(itemRequestDTO.getName()));
     }
 
     @Test
     void whenUpdateItemThenReturn200() throws Exception {
         var itemId = UUID.fromString("55fd4dd7-3da4-40c8-a940-10c9c3c75e04");
-        var itemDTO = new ItemDTO(itemId, "Item updated name", null);
+        var itemRequestDTO = new ItemRequestDTO("Item updated name", null);
         var item = new ItemEntity(itemId, "Item updated name", null);
-        given(itemService.update(itemId, item)).willReturn(item);
+        given(itemService.update(any(), any())).willReturn(item);
 
         mockMvc.perform(put(ItemController.API_VERSION + ItemController.PATH + "/" + itemId)
-                        .content(asJsonString(itemDTO))
+                        .content(asJsonString(itemRequestDTO))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(itemDTO.getId().toString()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(itemDTO.getName()));
+                .andExpect(jsonPath("$.id", equalTo(itemId.toString())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(itemRequestDTO.getName()));
     }
 
     @Test

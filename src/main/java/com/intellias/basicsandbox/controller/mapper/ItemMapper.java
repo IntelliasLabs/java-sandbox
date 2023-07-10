@@ -1,7 +1,8 @@
 package com.intellias.basicsandbox.controller.mapper;
 
+import com.intellias.basicsandbox.controller.dto.item.ItemRequestDTO;
 import com.intellias.basicsandbox.persistence.entity.ItemEntity;
-import com.intellias.basicsandbox.controller.dto.ItemDTO;
+import com.intellias.basicsandbox.controller.dto.item.ItemSummaryDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -9,7 +10,7 @@ import org.mapstruct.factory.Mappers;
 public interface ItemMapper {
     ItemMapper INSTANCE = Mappers.getMapper(ItemMapper.class);
 
-    ItemEntity toEntity(final ItemDTO item);
+    ItemEntity toEntityFromRequestDTO(final ItemRequestDTO item);
 
-    ItemDTO toDTO(final ItemEntity itemEntity);
+    ItemSummaryDTO toSummaryDTO(final ItemEntity itemEntity);
 }
