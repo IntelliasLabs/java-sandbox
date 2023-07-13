@@ -1,4 +1,4 @@
-package com.intellias.basicsandbox.config.aspect;
+package com.intellias.basicsandbox.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
