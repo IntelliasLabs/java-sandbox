@@ -92,7 +92,7 @@ class ItemControllerMvcTests {
                 .getResponse()
                 .getContentAsString(StandardCharsets.UTF_8);
 
-        Assertions.assertTrue(contentAsString.contains("[name] Вкажіть імʼя до 250 символів. "));
+        Assertions.assertTrue(contentAsString.contains("[name] Вкажіть імʼя до 255 символів. "));
         Assertions.assertTrue(contentAsString.contains("[creditCard] має відповідати шаблону \\\"^(?:4[0-9]{12}("));
     }
 
@@ -110,7 +110,7 @@ class ItemControllerMvcTests {
                 .getResponse()
                 .getContentAsString(StandardCharsets.UTF_8);
 
-        Assertions.assertTrue(contentAsString.contains("[name] Add a name up to 250 characters."));
+        Assertions.assertTrue(contentAsString.contains("[name] Name has to be up to 255 characters."));
         Assertions.assertTrue(contentAsString.contains("[creditCard] має відповідати шаблону \\\"^(?:4[0-9]{12}("));
     }
 

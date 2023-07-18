@@ -88,7 +88,7 @@ public class ItemController {
     @Operation(summary = "Find item by id with localized fields (currency code)")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found item",
-                    content = {@Content(mediaType = "application/hal+json;charset=utf8", schema = @Schema(implementation = ItemDTO.class)) }),
+                    content = {@Content(mediaType = "application/hal+json;charset=utf8", schema = @Schema(implementation = LocalizedItemDTO.class)) }),
             @ApiResponse(responseCode = "404", description = "Error",
                     content = {@Content(mediaType = "application/hal+json;charset=utf8", schema = @Schema(implementation = ErrorDTO.class)) }) })
     // UTF-8 response encoding is important for serialization of translated values
