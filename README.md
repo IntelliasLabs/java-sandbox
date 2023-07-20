@@ -96,3 +96,16 @@ matching locale among those present in ResourceBundle files in the `src/main/res
 For translation of REST request arguments validation messages, there is a ValidationExceptionHandler class that handles  
 MethodArgumentNotValidException type exceptions and translates its messages by the language header.
 Validation happens before the REST controllers method invocation.
+
+## Spring Actuator
+
+The following Spring Actuator endpoints are used for monitoring application state and retrieving the corresponding data:
+
+ - `/actuator` Use this endpoint to get a list of all endpoints enabled in Spring Actuator.
+ - `/actuator/health` Use this endpoint to get the basic health information about the application.
+ - `/actuator/metrics` Use this endpoint to get a list of available application metrics.
+ - `/actuator/metrics/{MetricName}` Use this endpoint to receive data from the specific metric.
+ - `/actuator/info` Use this endpoint to display the application-specific information.
+ - `/actuator/httpexchanges` Use this endpoint to get traces of all the HTTP requests have been processed by the application.
+ - `/actuator/flyway` Use this endpoint to get details about the Flyway database migrations.
+ - `/actuator/beans` Use this endpoint to get all available beans created by the application.
