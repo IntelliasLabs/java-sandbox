@@ -81,7 +81,7 @@ class ItemControllerMvcTests {
     @Test
     void whenNameIsEmpty_ThenReturnLocalizedMessage_onUpdate() throws Exception {
         var itemId = UUID.fromString("55fd4dd7-3da4-40c8-a940-10c9c3c75e04");
-        var itemDTO = new ItemDTO(itemId, "", "4916338506082835 Q", "UAH");
+        var itemDTO = new ItemDTO(itemId, "", "4916338506082835 Q", "");
 
         String contentAsString = mockMvc.perform(put(ItemController.API_VERSION + ItemController.PATH)
                         .content(asJsonString(itemDTO))
@@ -94,12 +94,13 @@ class ItemControllerMvcTests {
 
         Assertions.assertTrue(contentAsString.contains("[name] Вкажіть імʼя до 255 символів. "));
         Assertions.assertTrue(contentAsString.contains("[creditCard] має відповідати шаблону \\\"^(?:4[0-9]{12}("));
+        Assertions.assertTrue(contentAsString.contains("[currencyCode] Використовуйте код валюти відповідно до ISO 4217."));
     }
 
     @Test
     void whenNameIsEmptyAndTranslationIsMissed_ThenReturnLocalizedMessageFromParentLocale_onUpdate() throws Exception {
         var itemId = UUID.fromString("55fd4dd7-3da4-40c8-a940-10c9c3c75e04");
-        var itemDTO = new ItemDTO(itemId, "", "4916338506082835 Q", "UAH");
+        var itemDTO = new ItemDTO(itemId, "", "4916338506082835 Q", "");
 
         String contentAsString = mockMvc.perform(put(ItemController.API_VERSION + ItemController.PATH)
                         .content(asJsonString(itemDTO))
@@ -112,6 +113,7 @@ class ItemControllerMvcTests {
 
         Assertions.assertTrue(contentAsString.contains("[name] Name has to be up to 255 characters."));
         Assertions.assertTrue(contentAsString.contains("[creditCard] має відповідати шаблону \\\"^(?:4[0-9]{12}("));
+        Assertions.assertTrue(contentAsString.contains("[currencyCode] Use currency code in accordance with ISO 4217"));
     }
 
     @Test
