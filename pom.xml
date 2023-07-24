@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.intellias</groupId> <!-- change it -->
     <artifactId>basic-sandbox</artifactId> <!-- change it -->
-    <version>0.0.3-SNAPSHOT</version>
+    <version>0.0.4-SNAPSHOT</version>
     <name>basic-sandbox</name> <!-- change it -->
     <description>Basic service to start your own by copying and adjusting for your needs
     </description> <!-- change it -->
