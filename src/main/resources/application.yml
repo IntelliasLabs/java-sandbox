@@ -36,6 +36,8 @@ spring:
 app:
   dev:
     service-logging-enable: true # Aspect driven logging of all @Service annotated classes
+  security:
+    enabled: true # You can enable or disable app authentication using this property
 
 # Spring Actuator
 management:
