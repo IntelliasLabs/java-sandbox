@@ -36,3 +36,32 @@ spring:
 app:
   dev:
     service-logging-enable: true # Aspect driven logging of all @Service annotated classes
+  security:
+    enabled: true # You can enable or disable app authentication using this property
+
+# Spring Actuator
+management:
+  server:
+    port: 8081 # You can customize port used by Actuator using this property
+  info:
+    env:
+      enabled: true # Enabling custom behaviour of the `/info` endpoint
+  endpoints:
+    web:
+      exposure:
+        include: health, metrics, info, httpexchanges, flyway, beans, openapi, swagger-ui # List of endpoints enabled in Actuator
+      cors: # If you want to reach the Actuator endpoints through the Swagger UI when Actuator and Application utilizes different ports, CORS for your actuator endpoints should be enabled.
+        allowed-origins: '*'
+        allowed-methods: GET
+        allowed-headers: '*'
+
+# Customizing the Spring Actuator `/info` endpoint data
+info:
+  application:
+    name: Java Sandbox Application
+    description: Basic service to start your own by copying and adjusting for your needs
+    version: '@project.version@'
+
+# Documenting Spring Actuator endpoints
+springdoc:
+  show-actuator: true # Enable displaying the Spring Actuator endpoints on the `Swagger-UI` page

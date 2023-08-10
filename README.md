@@ -96,3 +96,33 @@ matching locale among those present in ResourceBundle files in the `src/main/res
 For translation of REST request arguments validation messages, there is a ValidationExceptionHandler class that handles  
 MethodArgumentNotValidException type exceptions and translates its messages by the language header.
 Validation happens before the REST controllers method invocation.
+
+## Spring Actuator
+
+The following Spring Actuator endpoints are used for monitoring application state and retrieving the corresponding data:
+
+ - `/actuator` Use this endpoint to get a list of all endpoints enabled in Spring Actuator.
+ - `/actuator/health` Use this endpoint to get the basic health information about the application.
+ - `/actuator/metrics` Use this endpoint to get a list of available application metrics.
+ - `/actuator/metrics/{MetricName}` Use this endpoint to receive data from the specific metric.
+ - `/actuator/info` Use this endpoint to display the application-specific information.
+ - `/actuator/httpexchanges` Use this endpoint to get traces of all the HTTP requests have been processed by the application.
+ - `/actuator/flyway` Use this endpoint to get details about the Flyway database migrations.
+ - `/actuator/beans` Use this endpoint to get all available beans created by the application.
+
+## Authentication
+
+The application utilizes the `Basic HTTP` authentication. It requires the `Authorization: Basic` header followed by the
+`login:password` pair to be included in all requests made to the application. 
+The login and password are specified in the [`credentials.properties`](src/main/resources/credentials.properties) file. 
+
+To disable the authentication for the entire application, use the `app:security:enabled` property of the 
+[`application.yml`](src/main/resources/application.yml).
+
+Note, that the `login:password` pair used in the authorization header should be encoded in `base64` format:
+
+```http request
+### Get all items
+GET http://localhost:8081/actuator
+Authorization: Basic dXNlcjpwYXNzd29yZA==
+```

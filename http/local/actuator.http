@@ -1,0 +1,27 @@
+### get all enabled Actuator endpoints
+#@no-log
+GET http://localhost:8081/actuator
+
+### get health status of the application
+#@no-log
+GET http://localhost:8081/actuator/health
+
+### get application metrics
+#@no-log
+GET http://localhost:8081/actuator/metrics
+
+### get application info
+#@no-log
+GET http://localhost:8081/actuator/info
+
+### get HTTP requests tracing data
+#@no-log
+GET http://localhost:8081/actuator/httpexchanges
+
+### get Flyway migration data
+#@no-log
+GET http://localhost:8081/actuator/flyway
+
+### get list of created beans
+#@no-log
+GET http://localhost:8081/actuator/beans
